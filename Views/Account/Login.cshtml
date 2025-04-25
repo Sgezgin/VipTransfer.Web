@@ -1,0 +1,52 @@
+@model VipTransfer.Web.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<div class="flex justify-center my-8">
+    <div class="w-full max-w-md">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-blue-700 p-6 text-white text-center">
+                <h2 class="text-2xl font-bold">@ViewData["Title"]</h2>
+                <p class="mt-2 text-blue-100">VIP Transfer hesabınıza giriş yapın</p>
+            </div>
+            
+            <div class="p-6">
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Username" class="block text-gray-700 text-sm font-medium mb-2">Kullanıcı Adı</label>
+                        <input asp-for="Username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Kullanıcı adınızı girin">
+                        <span asp-validation-for="Username" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label asp-for="Password" class="block text-gray-700 text-sm font-medium mb-2">Şifre</label>
+                        <input asp-for="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Şifrenizi girin">
+                        <span asp-validation-for="Password" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="flex items-center mb-6">
+                        <input asp-for="RememberMe" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label asp-for="RememberMe" class="ml-2 block text-sm text-gray-700">Beni hatırla</label>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
+                            Giriş Yap
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">Hesabınız yok mu? <a href="/Account/Register" class="text-blue-700 hover:underline font-medium">Kayıt Ol</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

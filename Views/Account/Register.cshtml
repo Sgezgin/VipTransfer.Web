@@ -1,0 +1,93 @@
+@model VipTransfer.Web.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="flex justify-center my-8">
+    <div class="w-full max-w-lg">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-blue-700 p-6 text-white text-center">
+                <h2 class="text-2xl font-bold">@ViewData["Title"]</h2>
+                <p class="mt-2 text-blue-100">VIP Transfer'e hoş geldiniz</p>
+            </div>
+            
+            <div class="p-6">
+                <form asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="UserType" class="block text-gray-700 text-sm font-medium mb-2">Hesap Türü</label>
+                        <div class="flex gap-4">
+                            <div class="flex items-center">
+                                <input type="radio" id="user-type-0" name="UserType" value="0" checked class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <label for="user-type-0" class="ml-2 block text-sm text-gray-700">Müşteri</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="user-type-1" name="UserType" value="1" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <label for="user-type-1" class="ml-2 block text-sm text-gray-700">Firma</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label asp-for="FirstName" class="block text-gray-700 text-sm font-medium mb-2">Ad</label>
+                            <input asp-for="FirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Adınız">
+                            <span asp-validation-for="FirstName" class="text-sm text-red-600"></span>
+                        </div>
+                        
+                        <div>
+                            <label asp-for="LastName" class="block text-gray-700 text-sm font-medium mb-2">Soyad</label>
+                            <input asp-for="LastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Soyadınız">
+                            <span asp-validation-for="LastName" class="text-sm text-red-600"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Username" class="block text-gray-700 text-sm font-medium mb-2">Kullanıcı Adı</label>
+                        <input asp-for="Username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Kullanıcı adınız">
+                        <span asp-validation-for="Username" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Email" class="block text-gray-700 text-sm font-medium mb-2">E-posta</label>
+                        <input asp-for="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="ornek@email.com">
+                        <span asp-validation-for="Email" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Phone" class="block text-gray-700 text-sm font-medium mb-2">Telefon</label>
+                        <input asp-for="Phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="05XX XXX XX XX">
+                        <span asp-validation-for="Phone" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Password" class="block text-gray-700 text-sm font-medium mb-2">Şifre</label>
+                        <input asp-for="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Şifreniz">
+                        <span asp-validation-for="Password" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label asp-for="ConfirmPassword" class="block text-gray-700 text-sm font-medium mb-2">Şifre Tekrarı</label>
+                        <input asp-for="ConfirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Şifrenizi tekrar girin">
+                        <span asp-validation-for="ConfirmPassword" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
+                            Kayıt Ol
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">Zaten bir hesabınız var mı? <a href="/Account/Login" class="text-blue-700 hover:underline font-medium">Giriş Yap</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

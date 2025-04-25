@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VipTransfer.Web", "VipTransfer.Web.csproj", "{673862E2-9290-17BD-3029-5C91D24E0FC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{673862E2-9290-17BD-3029-5C91D24E0FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{673862E2-9290-17BD-3029-5C91D24E0FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{673862E2-9290-17BD-3029-5C91D24E0FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{673862E2-9290-17BD-3029-5C91D24E0FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5792DEF-40DE-447D-AA13-8CF746F8E10F}
+	EndGlobalSection
+EndGlobal

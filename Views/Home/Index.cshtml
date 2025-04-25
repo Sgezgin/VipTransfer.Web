@@ -1,0 +1,232 @@
+﻿@model List<VipTransfer.Web.Models.FIRMAModels>
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<!-- Hero Section -->
+<div class="relative">
+    <div class="bg-gradient-to-r from-blue-900 to-blue-700 rounded-xl overflow-hidden">
+        <div class="container mx-auto px-6 py-16 relative z-10">
+            <div class="text-center md:text-left md:max-w-2xl">
+                <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-6">VIP Transfer ile Konforlu Yolculuklar</h1>
+                <p class="text-xl text-blue-100 mb-8">Lüks araçlarımız ve profesyonel sürücülerimizle güvenli ve konforlu transfer hizmeti.</p>
+                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                    <a href="/Rezervasyon/Create" class="bg-white text-blue-900 font-semibold px-6 py-3 rounded-lg hover:bg-blue-50 transition">Hemen Rezervasyon Yap</a>
+                    <a href="#services" class="bg-transparent border-2 border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition">Hizmetlerimiz</a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1511295842340-caf5e716fb8e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=1080&h=768');"></div>
+    </div>
+</div>
+
+<!-- Rezervasyon Formu -->
+<div class="container mx-auto mt-12 px-4">
+    <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Hızlı Rezervasyon</h2>
+        
+        <form action="/Rezervasyon/Create" method="get" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+                <label for="nereden" class="block text-sm font-medium text-gray-700 mb-2">Nereden</label>
+                <input type="text" id="nereden" name="nereden" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+                <label for="nereye" class="block text-sm font-medium text-gray-700 mb-2">Nereye</label>
+                <input type="text" id="nereye" name="nereye" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+                <label for="tarih" class="block text-sm font-medium text-gray-700 mb-2">Tarih</label>
+                <input type="date" id="tarih" name="tarih" required min="@DateTime.Now.ToString("yyyy-MM-dd")" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div class="flex items-end">
+                <button type="submit" class="w-full bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-800 transition">
+                    Rezervasyon Yap
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Hizmetlerimiz -->
+<div id="services" class="container mx-auto mt-20 px-4">
+    <h2 class="text-3xl font-bold text-gray-800 mb-12 text-center">Hizmetlerimiz</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden transition transform hover:-translate-y-1 hover:shadow-lg">
+            <div class="p-6">
+                <div class="text-center mb-4">
+                    <i class="fas fa-plane text-4xl text-blue-700"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 text-center">Havalimanı Transferi</h3>
+                <p class="text-gray-600">Havalimanından otel veya evinize konforlu bir yolculuk için profesyonel transfer hizmetimizi tercih edin.</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md overflow-hidden transition transform hover:-translate-y-1 hover:shadow-lg">
+            <div class="p-6">
+                <div class="text-center mb-4">
+                    <i class="fas fa-hotel text-4xl text-blue-700"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 text-center">Otel Transferi</h3>
+                <p class="text-gray-600">Otelinizden varış noktanıza zamanında ve konforlu şekilde ulaşmanızı sağlıyoruz.</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md overflow-hidden transition transform hover:-translate-y-1 hover:shadow-lg">
+            <div class="p-6">
+                <div class="text-center mb-4">
+                    <i class="fas fa-car text-4xl text-blue-700"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 text-center">VIP Taşımacılık</h3>
+                <p class="text-gray-600">Lüks araç filomuzu özel günler, iş toplantıları ve özel organizasyonlar için kiralayabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Araç Filosu -->
+<div class="container mx-auto mt-20 px-4">
+    <h2 class="text-3xl font-bold text-gray-800 mb-12 text-center">Araç Filomuz</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="h-48 bg-blue-100 flex items-center justify-center p-6">
+                <i class="fas fa-car-side text-6xl text-blue-700"></i>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Ekonomik Sedan</h3>
+                <p class="text-gray-600 mb-3">4 Kişi | 3 Bavul</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-700 font-semibold">₺350'den başlayan</span>
+                    <a href="/Rezervasyon/Create" class="text-blue-700 hover:underline font-medium">Rezervasyon Yap</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="h-48 bg-blue-100 flex items-center justify-center p-6">
+                <i class="fas fa-car text-6xl text-blue-700"></i>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Business Sedan</h3>
+                <p class="text-gray-600 mb-3">4 Kişi | 3 Bavul</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-700 font-semibold">₺500'den başlayan</span>
+                    <a href="/Rezervasyon/Create" class="text-blue-700 hover:underline font-medium">Rezervasyon Yap</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="h-48 bg-blue-100 flex items-center justify-center p-6">
+                <i class="fas fa-shuttle-van text-6xl text-blue-700"></i>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">VIP Minivan</h3>
+                <p class="text-gray-600 mb-3">6 Kişi | 6 Bavul</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-700 font-semibold">₺750'den başlayan</span>
+                    <a href="/Rezervasyon/Create" class="text-blue-700 hover:underline font-medium">Rezervasyon Yap</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="h-48 bg-blue-100 flex items-center justify-center p-6">
+                <i class="fas fa-bus-alt text-6xl text-blue-700"></i>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">VIP Minibüs</h3>
+                <p class="text-gray-600 mb-3">12 Kişi | 12 Bavul</p>
+                <div class="flex items-center justify-between">
+                    <span class="text-blue-700 font-semibold">₺1200'den başlayan</span>
+                    <a href="/Rezervasyon/Create" class="text-blue-700 hover:underline font-medium">Rezervasyon Yap</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- İş Ortaklarımız -->
+<div class="container mx-auto mt-20 px-4">
+    <h2 class="text-3xl font-bold text-gray-800 mb-12 text-center">İş Ortaklarımız</h2>
+    
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+        @foreach (var firma in Model)
+        {
+            <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-center">
+                <div class="text-center">
+                    <i class="fas fa-building text-4xl text-blue-700 mb-3"></i>
+                    <p class="text-gray-800 font-medium">@firma.FIRMAADI</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Müşteri Yorumları -->
+<div class="container mx-auto mt-20 px-4 mb-20">
+    <h2 class="text-3xl font-bold text-gray-800 mb-12 text-center">Müşteri Yorumları</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="text-yellow-400 flex">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <p class="text-gray-600 mb-6">"Havalimanından otele transferimiz sorunsuz gerçekleşti. Şoför zamanında geldi ve çok nazikti. Kesinlikle tekrar tercih edeceğim."</p>
+            <div class="flex items-center">
+                <div>
+                    <p class="font-semibold text-gray-800">Ahmet Yılmaz</p>
+                    <p class="text-gray-500 text-sm">İstanbul</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="text-yellow-400 flex">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            <p class="text-gray-600 mb-6">"İş seyahatim için VIP araç kiraladım ve hizmetten çok memnun kaldım. Şoför profesyonel ve araç çok temizdi. Teşekkürler!"</p>
+            <div class="flex items-center">
+                <div>
+                    <p class="font-semibold text-gray-800">Zeynep Kaya</p>
+                    <p class="text-gray-500 text-sm">Ankara</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex items-center mb-4">
+                <div class="text-yellow-400 flex">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+            <p class="text-gray-600 mb-6">"Ailemle birlikte minivan kiraladık. Şoför çok yardımcı oldu ve bavullarımızla ilgilendi. Konforlu bir yolculuk için teşekkürler."</p>
+            <div class="flex items-center">
+                <div>
+                    <p class="font-semibold text-gray-800">Mehmet Demir</p>
+                    <p class="text-gray-500 text-sm">İzmir</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
