@@ -1,0 +1,382 @@
+@model VipTransfer.Web.Models.ARACLARModels
+@{
+    ViewData["Title"] = "Araç Detayları";
+    var fotograflar = ViewBag.Fotograflar as List<VipTransfer.Web.Models.ARACFOTOModels> ?? new List<VipTransfer.Web.Models.ARACFOTOModels>();
+}
+
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Araç Detayları</h1>
+        <a href="/Firma/Vehicles" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Araçlara Dön
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <span class="font-bold">Başarılı!</span> @TempData["SuccessMessage"]
+        </div>
+    }
+    
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <!-- Sol Taraf - Araç Bilgileri -->
+        <div class="lg:col-span-3 space-y-6">
+            <!-- Araç Fotoğrafları -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                @if (fotograflar.Any())
+                {
+                    <div x-data="{ activeSlide: 0, totalSlides: @fotograflar.Count }">
+                        <!-- Ana Fotoğraf -->
+                        <div class="relative h-96">
+                            @foreach (var foto in fotograflar)
+                            {
+                                <div x-show="activeSlide === @(foto.SIRANO - 1)" 
+                                     class="absolute inset-0 w-full h-full transition-opacity duration-500"
+                                     x-transition:enter="transition ease-out duration-300"
+                                     x-transition:enter-start="opacity-0"
+                                     x-transition:enter-end="opacity-100"
+                                     x-transition:leave="transition ease-in duration-300"
+                                     x-transition:leave-start="opacity-100"
+                                     x-transition:leave-end="opacity-0">
+                                    <img src="@foto.FOTOYOLU" alt="@Model.MARKA @Model.MODEL" class="w-full h-full object-cover">
+                                </div>
+                            }
+                            
+                            <!-- Navigasyon Okları -->
+                            <button @@click="activeSlide = (activeSlide - 1 + totalSlides) % totalSlides" 
+                                    class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75 focus:outline-none">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button @@click="activeSlide = (activeSlide + 1) % totalSlides" 
+                                    class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75 focus:outline-none">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            
+                            <!-- Durumlar -->
+                            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                                <template x-for="(slide, index) in Array.from({ length: totalSlides })" :key="index">
+                                    <button @@click="activeSlide = index" 
+                                            :class="{ 'bg-white': activeSlide === index, 'bg-gray-400': activeSlide !== index }"
+                                            class="w-3 h-3 rounded-full focus:outline-none"></button>
+                                </template>
+                            </div>
+                        </div>
+                        
+                        <!-- Küçük Resimler -->
+                        <div class="p-2 bg-gray-100 overflow-x-auto">
+                            <div class="flex space-x-2 min-w-full">
+                                @foreach (var foto in fotograflar)
+                                {
+                                    <button @@click="activeSlide = @(foto.SIRANO - 1)" 
+                                            :class="{ 'ring-2 ring-blue-500': activeSlide === @(foto.SIRANO - 1) }"
+                                            class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden">
+                                        <img src="@foto.FOTOYOLU" alt="Küçük resim" class="w-full h-full object-cover">
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="h-96 flex items-center justify-center bg-gray-100">
+                        <div class="text-center">
+                            <i class="fas fa-car text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500">Bu araç için fotoğraf bulunmuyor</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <!-- Aracın Temel Özellikleri -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-blue-700 p-4 text-white">
+                    <h2 class="text-xl font-semibold">Temel Bilgiler</h2>
+                </div>
+                
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Araç Bilgileri</h3>
+                            <table class="w-full">
+                                <tbody>
+                                    <tr class="border-b">
+                                        <td class="py-2 text-gray-600 font-medium">Marka</td>
+                                        <td class="py-2 text-gray-900">@Model.MARKA</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2 text-gray-600 font-medium">Model</td>
+                                        <td class="py-2 text-gray-900">@Model.MODEL</td>
+                                    </tr>
+                                    @if (!string.IsNullOrEmpty(Model.SERI))
+                                    {
+                                        <tr class="border-b">
+                                            <td class="py-2 text-gray-600 font-medium">Seri</td>
+                                            <td class="py-2 text-gray-900">@Model.SERI</td>
+                                        </tr>
+                                    }
+                                    <tr class="border-b">
+                                        <td class="py-2 text-gray-600 font-medium">Plaka</td>
+                                        <td class="py-2 text-gray-900">@Model.PLAKA</td>
+                                    </tr>
+                                    @if (Model.YILI > 0)
+                                    {
+                                        <tr class="border-b">
+                                            <td class="py-2 text-gray-600 font-medium">Model Yılı</td>
+                                            <td class="py-2 text-gray-900">@Model.YILI</td>
+                                        </tr>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.RENK))
+                                    {
+                                        <tr class="border-b">
+                                            <td class="py-2 text-gray-600 font-medium">Renk</td>
+                                            <td class="py-2 text-gray-900">@Model.RENK</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="py-2 text-gray-600 font-medium">Araç Tipi</td>
+                                        <td class="py-2">
+                                            @switch (Model.TIP)
+                                            {
+                                                case 1:
+                                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">Ekonomik</span>
+                                                    break;
+                                                case 2:
+                                                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">VIP</span>
+                                                    break;
+                                                case 3:
+                                                    <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-semibold">Lüks</span>
+                                                    break;
+                                                default:
+                                                    <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-semibold">Diğer</span>
+                                                    break;
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Teknik Özellikler</h3>
+                            <table class="w-full">
+                                <tbody>
+                                    @if (!string.IsNullOrEmpty(Model.YAKITTURU))
+                                    {
+                                        <tr class="border-b">
+                                            <td class="py-2 text-gray-600 font-medium">Yakıt Türü</td>
+                                            <td class="py-2 text-gray-900">@Model.YAKITTURU</td>
+                                        </tr>
+                                    }
+                                    @if (Model.KOLTUKSAYISI > 0)
+                                    {
+                                        <tr class="border-b">
+                                            <td class="py-2 text-gray-600 font-medium">Koltuk Sayısı</td>
+                                            <td class="py-2 text-gray-900">@Model.KOLTUKSAYISI</td>
+                                        </tr>
+                                    }
+                                    @if (Model.BAGAJKAPASITESI > 0)
+                                    {
+                                        <tr class="border-b">
+                                            <td class="py-2 text-gray-600 font-medium">Bagaj Kapasitesi</td>
+                                            <td class="py-2 text-gray-900">@Model.BAGAJKAPASITESI</td>
+                                        </tr>
+                                    }
+                             
+                                    @if (Model.KILOMETREDEGER > 0)
+                                    {
+                                        <tr>
+                                            <td class="py-2 text-gray-600 font-medium">Kilometre</td>
+                                            <td class="py-2 text-gray-900">@Model.KILOMETREDEGER km</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(Model.OZELNITELIKLER))
+                    {
+                        <div class="mt-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">Özel Nitelikler</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-gray-700">@Model.OZELNITELIKLER</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sağ Taraf - Yan Panel -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Firma Bilgileri -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-blue-700 p-4 text-white">
+                    <h2 class="text-xl font-semibold">Firma Bilgileri</h2>
+                </div>
+                
+                <div class="p-5">
+                    @if (Model.FIRMA != null)
+                    {
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-building text-blue-700 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">@Model.FIRMA.FIRMAADI</h3>
+                                @if (Model.FIRMA.AKTIF == 1)
+                                {
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Aktif</span>
+                                }
+                                else
+                                {
+                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">Pasif</span>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            @if (!string.IsNullOrEmpty(Model.FIRMA.TELEFON1))
+                            {
+                                <div class="flex items-center">
+                                    <i class="fas fa-phone text-gray-500 w-6"></i>
+                                    <span class="text-gray-700 ml-2">@Model.FIRMA.TELEFON1</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.FIRMA.EMAIL))
+                            {
+                                <div class="flex items-center">
+                                    <i class="fas fa-envelope text-gray-500 w-6"></i>
+                                    <span class="text-gray-700 ml-2">@Model.FIRMA.EMAIL</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.FIRMA.VERGIDAIRESI) || !string.IsNullOrEmpty(Model.FIRMA.VERGINO.ToString()))
+                            {
+                                <div class="flex items-start">
+                                    <i class="fas fa-file-invoice-dollar text-gray-500 w-6 mt-1"></i>
+                                    <span class="text-gray-700 ml-2">@(Model.FIRMA.VERGIDAIRESI) / @(Model.FIRMA.VERGINO)</span>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-exclamation-circle text-yellow-500 text-3xl mb-2"></i>
+                            <p class="text-gray-500">Firma bilgisi bulunamadı</p>
+                        </div>
+                    }
+                </div>
+            </div>
+            
+            <!-- İşlemler -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gray-800 p-4 text-white">
+                    <h2 class="text-xl font-semibold">İşlemler</h2>
+                </div>
+                
+                <div class="p-5 space-y-3">
+                    <a href="/Firma/EditVehicle/@Model.ARACGUID" class="flex items-center justify-between bg-blue-50 hover:bg-blue-100 p-4 rounded-lg transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-edit text-blue-700 mr-3"></i>
+                            <span class="font-medium text-blue-800">Aracı Düzenle</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-blue-400"></i>
+                    </a>
+                    
+                    <a href="/Firma/AddPhotos/@Model.ARACGUID" class="flex items-center justify-between bg-green-50 hover:bg-green-100 p-4 rounded-lg transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-images text-green-700 mr-3"></i>
+                            <span class="font-medium text-green-800">Fotoğraf Ekle</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-green-400"></i>
+                    </a>
+                    
+                    <button x-data="{}" @@click="$dispatch('open-modal', 'confirm-vehicle-deletion')" class="w-full flex items-center justify-between bg-red-50 hover:bg-red-100 p-4 rounded-lg transition">
+                        <div class="flex items-center">
+                            <i class="fas fa-trash text-red-700 mr-3"></i>
+                            <span class="font-medium text-red-800">Aracı Sil</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-red-400"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Rezervasyon İstatistikleri -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-purple-700 p-4 text-white">
+                    <h2 class="text-xl font-semibold">Rezervasyon İstatistikleri</h2>
+                </div>
+                
+                <div class="p-5">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700 font-medium">Toplam Rezervasyon</span>
+                            <span class="text-purple-700 font-bold">@ViewBag.RezervasyonSayisi</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700 font-medium">Bu Ay</span>
+                            <span class="text-purple-700 font-bold">@ViewBag.BuAyRezervasyonSayisi</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700 font-medium">İptal Edilenler</span>
+                            <span class="text-red-600 font-bold">@ViewBag.IptalRezervasyonSayisi</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700 font-medium">Toplam Ciro</span>
+                            <span class="text-green-600 font-bold">@ViewBag.ToplamCiro ₺</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <a href="/Firma/VehicleReservations/@Model.ARACGUID" class="block w-full bg-purple-600 text-white text-center py-2 rounded-lg hover:bg-purple-700 transition">
+                            Rezervasyonları Görüntüle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Silme Modal -->
+<div x-data="{ open: false }" @@open-modal.window="$event.detail == 'confirm-vehicle-deletion' ? open = true : open = false" x-show="open" x-cloak class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
+        
+        <div x-show="open" x-transition class="bg-white rounded-xl shadow-lg max-w-md w-full mx-auto z-10 overflow-hidden">
+            <div class="bg-red-600 p-4 text-white">
+                <h3 class="text-xl font-semibold">Aracı Sil</h3>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-6">
+                    <i class="fas fa-exclamation-triangle text-yellow-500 text-3xl mb-3 block text-center"></i>
+                    <p class="text-gray-700 mb-2">Bu aracı silmek istediğinize emin misiniz?</p>
+                    <p class="text-gray-600 text-sm">Bu işlem geri alınamaz ve aracın tüm rezervasyon geçmişi ve fotoğrafları da silinecektir.</p>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button @@click="open = false" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition">
+                        İptal
+                    </button>
+                    
+                    <form asp-action="DeleteVehicle" asp-route-id="@Model.ARACGUID" method="post">
+                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Aracı Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+}

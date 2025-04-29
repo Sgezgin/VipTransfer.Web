@@ -1,0 +1,223 @@
+@model List<VipTransfer.Web.Models.REZERVASYONModels>
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+}
+
+<div class="max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Yönetim Paneli</h1>
+    
+    <!-- İstatistikler -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <a href="/Firma/FirmaListesi" class="block">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 mr-4">
+                        <i class="fas fa-building text-2xl text-blue-700"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Firmalar</p>
+                        <p class="text-2xl font-bold text-gray-800">@ViewBag.FirmaSayisi</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/Firma/MusteriListesi" class="block">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 mr-4">
+                        <i class="fas fa-users text-2xl text-green-700"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Müşteriler</p>
+                        <p class="text-2xl font-bold text-gray-800">@ViewBag.MusteriSayisi</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/Firma/AracListesi" class="block">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 mr-4">
+                        <i class="fas fa-car text-2xl text-purple-700"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Araçlar</p>
+                        <p class="text-2xl font-bold text-gray-800">@ViewBag.AracSayisi</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/Firma/Reservations" class="block">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 mr-4">
+                        <i class="fas fa-calendar-check text-2xl text-yellow-700"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Rezervasyonlar</p>
+                        <p class="text-2xl font-bold text-gray-800">@ViewBag.RezervasyonSayisi</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <!-- Grafikler -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Aylık Rezervasyon İstatistikleri</h2>
+            <div class="h-64 flex items-center justify-center">
+                <div class="text-center text-gray-500">
+                    <i class="fas fa-chart-line text-5xl mb-4"></i>
+                    <p>Bu bölümde aylık rezervasyon grafiği gösterilecektir.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">En Popüler Rotalar</h2>
+            <div class="h-64 flex items-center justify-center">
+                <div class="text-center text-gray-500">
+                    <i class="fas fa-chart-pie text-5xl mb-4"></i>
+                    <p>Bu bölümde en popüler rotalar grafiği gösterilecektir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Son Rezervasyonlar -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800">Son Rezervasyonlar</h2>
+        </div>
+        
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Rezervasyon No
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tarih/Saat
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Müşteri
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Güzergah
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Durum
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var rezervasyon in Model)
+                        {
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@(rezervasyon.REZGUID?.Length > 8 ? rezervasyon.REZGUID.Substring(0, 8).ToUpper() : rezervasyon.REZGUID?.ToUpper())</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@rezervasyon.REZTARIH.ToString("dd.MM.yyyy")</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.REZSAAT</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @{
+                                        var musteri = ViewBag.Musteriler != null ? 
+                                            ((List<VipTransfer.Web.Models.MUSTERIModels>)ViewBag.Musteriler).FirstOrDefault(m => m.MUSTERIGUID == rezervasyon.MUSTERIGUID) : null;
+                                    }
+                                    <div class="text-sm text-gray-900">@(musteri != null ? musteri.MADISOYADI : "Müşteri Bilgisi")</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">@rezervasyon.NERDEN</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.NEREYE</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if (rezervasyon.IPTAL == 1)
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            İptal Edildi
+                                        </span>
+                                    }
+                                    else if (!string.IsNullOrEmpty(rezervasyon.ALTFIRMA) && rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI"))
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Onaylandı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Onay Bekliyor
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/Rezervasyon/Details/@rezervasyon.REZGUID" class="text-blue-600 hover:text-blue-900">
+                                        Detaylar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center">
+                <p class="text-gray-500">Henüz bir rezervasyon bulunmuyor.</p>
+            </div>
+        }
+    </div>
+    
+    <!-- Hızlı İşlemler -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <a href="/Firma/Reservations" class="bg-blue-700 text-white rounded-xl shadow-md p-6 hover:bg-blue-800 transition">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-white bg-opacity-20 mr-4">
+                    <i class="fas fa-calendar-alt text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Tüm Rezervasyonlar</h3>
+                    <p class="text-blue-100">Tüm rezervasyonları görüntüle</p>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/Firma/Vehicles" class="bg-green-600 text-white rounded-xl shadow-md p-6 hover:bg-green-700 transition">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-white bg-opacity-20 mr-4">
+                    <i class="fas fa-car text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Araç Yönetimi</h3>
+                    <p class="text-green-100">Araçları görüntüle ve düzenle</p>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/Firma/Vehicles" class="bg-purple-600 text-white rounded-xl shadow-md p-6 hover:bg-purple-700 transition">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-white bg-opacity-20 mr-4">
+                    <i class="fas fa-chart-bar text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Araç Yönetimi</h3>
+                    <p class="text-purple-100">Araçları görüntüle ve yönet</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+

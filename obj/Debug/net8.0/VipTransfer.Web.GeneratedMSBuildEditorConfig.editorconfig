@@ -14,7 +14,7 @@ build_property.EnableComHosting =
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
-build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = D:\project2\VipTransfer.Web
 build_property._RazorSourceGeneratorDebug = 
 
@@ -30,12 +30,64 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcQWRkVmVoaWNsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/project2/VipTransfer.Web/Views/Firma/AracListesi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcQXJhY0xpc3Rlc2kuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/FirmaDuzenle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRmlybWFEdXplbmxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/FirmaListesi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRmlybWFMaXN0ZXNpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/MusteriDetay.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcTXVzdGVyaURldGF5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/MusteriDuzenle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcTXVzdGVyaUR1emVubGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/MusteriListesi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcTXVzdGVyaUxpc3Rlc2kuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/Reservations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcUmVzZXJ2YXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/VehicleDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcVmVoaWNsZURldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/Vehicles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcVmVoaWNsZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/YeniFirma.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcWWVuaUZpcm1hLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/YeniMusteri.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcWWVuaU11c3RlcmkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/project2/VipTransfer.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/project2/VipTransfer.Web/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Rezervasyon/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV6ZXJ2YXN5b25cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/project2/VipTransfer.Web/Views/Rezervasyon/Details.cshtml]

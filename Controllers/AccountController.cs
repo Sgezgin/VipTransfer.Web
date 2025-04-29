@@ -34,72 +34,101 @@ namespace VipTransfer.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Şifreyi hashle
-                string hashedPassword = HashPassword(model.Password);
+                //string hashedPassword = HashPassword(model.Password);
 
-                // Kullanıcıyı kontrol et
-                var user = _context.KULLANICI
-                    .FirstOrDefault(u => u.KADI == model.Username && u.KSIFRE == hashedPassword);
-
-                if (user != null)
+                try
                 {
-                    // Login başarılı, oturum bilgilerini tut
-                    HttpContext.Session.SetString("Username", user.KADI);
-                    HttpContext.Session.SetInt32("IsAdmin", (int)user.ADMIN);
+                    string hashedPassword = "";
+                    using (PasswordCryptography psw = new PasswordCryptography())
+                    {
+                        hashedPassword = psw.TextSifrele(model.Password.Replace("==", ""));
 
-                    if (!string.IsNullOrEmpty(user.MUSTERIGUID))
-                    {
-                        HttpContext.Session.SetString("UserType", "Musteri");
-                        HttpContext.Session.SetString("UserGUID", user.MUSTERIGUID);
                     }
-                    else if (!string.IsNullOrEmpty(user.FIRMAGUID))
-                    {
-                        HttpContext.Session.SetString("UserType", "Firma");
-                        HttpContext.Session.SetString("UserGUID", user.FIRMAGUID);
-                    }
+                    // Kullanıcıyı kontrol et
+                    var user = _context.KULLANICI
+                        .FirstOrDefault(u => u.KADI == model.Username && u.KSIFRE == hashedPassword);
 
-                    // Login log kaydını oluştur
-                    LOGINLOGModels log = new LOGINLOGModels
+                    if (user != null)
                     {
-                        LLGUID = Guid.NewGuid().ToString(),
-                        KULLADI = user.KADI,
-                        PCADI = Request.Host.Value,
-                        TARIHKISA = DateTime.Now.Date,
-                        TARIHUZUN = DateTime.Now
-                    };
-                    _context.LOGINLOG.Add(log);
-                    _context.SaveChanges();
+                        // Login başarılı, oturum bilgilerini tut
+                        HttpContext.Session.SetString("Username", user.KADI);
+                        HttpContext.Session.SetInt32("IsAdmin", (int)user.ADMIN);
 
-                    // Kullanıcı tipine göre yönlendir
-                    if (user.ADMIN == 1)
-                    {
-                        return RedirectToAction("Dashboard", "Firma");
-                    }
-                    else if (!string.IsNullOrEmpty(user.FIRMAGUID))
-                    {
-                        return RedirectToAction("Reservations", "Firma");
+                        if (!string.IsNullOrEmpty(user.MUSTERIGUID))
+                        {
+                            HttpContext.Session.SetString("UserType", "Musteri");
+                            HttpContext.Session.SetString("UserGUID", user.MUSTERIGUID);
+                        }
+                        else if (!string.IsNullOrEmpty(user.FIRMAGUID))
+                        {
+                            HttpContext.Session.SetString("UserType", "Firma");
+                            HttpContext.Session.SetString("UserGUID", user.FIRMAGUID);
+                        }
+
+                        // Login log kaydını oluştur
+                        LOGINLOGModels log = new LOGINLOGModels
+                        {
+                            LLGUID = Guid.NewGuid().ToString(),
+                            KULLADI = user.KADI,
+                            PCADI = Request.Host.Value,
+                            TARIHKISA = DateTime.Now.Date,
+                            TARIHUZUN = DateTime.Now
+                        };
+                        _context.LOGINLOG.Add(log);
+                        _context.SaveChanges();
+
+                        // Kullanıcı tipine göre yönlendir
+                        if (user.ADMIN == 1)
+                        {
+                            return RedirectToAction("Dashboard", "Firma");
+                        }
+                        else if (!string.IsNullOrEmpty(user.FIRMAGUID))
+                        {
+                            return RedirectToAction("Reservations", "Firma");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                else
-                {
-                    // Hatalı giriş
-                    ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre hatalı");
+                        // Hatalı giriş
+                        ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre hatalı");
 
-                    // Hatalı giriş log kaydı
-                    LOGINLOGModels log = new LOGINLOGModels
+                        // Hatalı giriş log kaydı
+                        LOGINLOGModels log = new LOGINLOGModels
+                        {
+                            LLGUID = Guid.NewGuid().ToString(),
+                            KULLADI = model.Username,
+                            PCADI = Request.Host.Value,
+                            HATA = "Kullanıcı adı veya şifre hatalı",
+                            TARIHKISA = DateTime.Now.Date,
+                            TARIHUZUN = DateTime.Now
+                        };
+                        _context.LOGINLOG.Add(log);
+                        _context.SaveChanges();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    // Hata bilgilerini detaylı bir şekilde yazdırın
+                    Console.WriteLine($"Hata Türü: {ex.GetType().Name}");
+                    Console.WriteLine($"Hata Mesajı: {ex.Message}");
+                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                    // İç içe hatalar varsa onları da yazdırın
+                    if (ex.InnerException != null)
                     {
-                        LLGUID = Guid.NewGuid().ToString(),
-                        KULLADI = model.Username,
-                        PCADI = Request.Host.Value,
-                        HATA = "Kullanıcı adı veya şifre hatalı",
-                        TARIHKISA = DateTime.Now.Date,
-                        TARIHUZUN = DateTime.Now
-                    };
-                    _context.LOGINLOG.Add(log);
-                    _context.SaveChanges();
+                        Console.WriteLine($"İç Hata: {ex.InnerException.Message}");
+                    }
+
+                    // Veya loglama sisteminize yazabilirsiniz
+                    //_logger.LogError(ex, "Kullanıcı girişi sırasında hata oluştu");
+
+                    // Kullanıcıya uygun bir hata mesajı gösterin
+                   // return View("Error", new ErrorViewModel { Message = "Kullanıcı girişi sırasında bir hata oluştu." });
                 }
             }
 
@@ -142,7 +171,7 @@ namespace VipTransfer.Web.Controllers
                 using (PasswordCryptography psw = new PasswordCryptography())
                 {
                     sifre = psw.TextSifrele(model.Password.Replace("==", ""));
-                   
+
                 }
 
                 if (model.UserType == 0) // Müşteri

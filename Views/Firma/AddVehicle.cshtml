@@ -3,40 +3,44 @@
     ViewData["Title"] = "Yeni Araç Ekle";
 }
 
-<div class="max-w-3xl mx-auto">
+<div class="max-w-5xl mx-auto">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Yeni Araç Ekle</h1>
         <a href="/Firma/Vehicles" class="text-blue-700 hover:underline flex items-center">
             <i class="fas fa-arrow-left mr-2"></i> Araçlara Dön
         </a>
     </div>
-    
-    <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="bg-blue-700 p-6 text-white">
-            <h2 class="text-xl font-semibold">Araç Bilgileri</h2>
-            <p class="mt-2 text-blue-100">Lütfen yeni araç bilgilerini girin</p>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <span class="font-bold">Hata!</span> @TempData["ErrorMessage"]
         </div>
+    }
+    
+    <form asp-action="AddVehicle" method="post" enctype="multipart/form-data" class="space-y-8">
+        <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
         
-        <div class="p-6">
-            <form asp-action="AddVehicle" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-                
-                <!-- Araç Bilgileri -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Ana Bilgiler -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-blue-700 p-6 text-white flex items-center">
+                <i class="fas fa-car-side text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Temel Araç Bilgileri</h2>
+                    <p class="mt-1 text-blue-100 text-sm">Aracın ana bilgilerini girin</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div>
-                        <label asp-for="PLAKA" class="block text-gray-700 text-sm font-medium mb-2">Plaka</label>
-                        <input asp-for="PLAKA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="34ABC123">
-                        <span asp-validation-for="PLAKA" class="text-sm text-red-600"></span>
-                    </div>
-                    
-                    <div>
-                        <label asp-for="MARKA" class="block text-gray-700 text-sm font-medium mb-2">Marka</label>
+                        <label asp-for="MARKA" class="block text-gray-700 text-sm font-medium mb-2">Marka*</label>
                         <input asp-for="MARKA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Mercedes">
                         <span asp-validation-for="MARKA" class="text-sm text-red-600"></span>
                     </div>
                     
                     <div>
-                        <label asp-for="MODEL" class="block text-gray-700 text-sm font-medium mb-2">Model</label>
+                        <label asp-for="MODEL" class="block text-gray-700 text-sm font-medium mb-2">Model*</label>
                         <input asp-for="MODEL" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="E-Class">
                         <span asp-validation-for="MODEL" class="text-sm text-red-600"></span>
                     </div>
@@ -48,7 +52,31 @@
                     </div>
                     
                     <div>
-                        <label asp-for="TIP" class="block text-gray-700 text-sm font-medium mb-2">Araç Tipi</label>
+                        <label asp-for="PLAKA" class="block text-gray-700 text-sm font-medium mb-2">Plaka*</label>
+                        <input asp-for="PLAKA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="34ABC123">
+                        <span asp-validation-for="PLAKA" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="YILI" class="block text-gray-700 text-sm font-medium mb-2">Model Yılı</label>
+                        <input asp-for="YILI" type="number" min="1990" max="@DateTime.Now.Year" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="@DateTime.Now.Year">
+                        <span asp-validation-for="YILI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="RENK" class="block text-gray-700 text-sm font-medium mb-2">Renk</label>
+                        <select asp-for="RENK" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Renk Seçiniz</option>
+                            @foreach (var renk in ViewBag.Renkler ?? new List<string>())
+                            {
+                                <option value="@renk">@renk</option>
+                            }
+                        </select>
+                        <span asp-validation-for="RENK" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TIP" class="block text-gray-700 text-sm font-medium mb-2">Araç Tipi*</label>
                         <select asp-for="TIP" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                             <option value="1">Ekonomik</option>
                             <option value="2">VIP</option>
@@ -58,51 +86,213 @@
                         <span asp-validation-for="TIP" class="text-sm text-red-600"></span>
                     </div>
                     
-                    @if (Context.Session.GetInt32("IsAdmin") == 1)
-                    {
-                        <div>
-                            <label asp-for="FIRMAGUID" class="block text-gray-700 text-sm font-medium mb-2">Firma</label>
-                            <select asp-for="FIRMAGUID" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                                <option value="">Firma Seçin</option>
-                                @foreach (var firma in ViewBag.Firmalar ?? new List<VipTransfer.Web.Models.FIRMAModels>())
-                                {
-                                    <option value="@firma.FIRMAGUID">@firma.FIRMAADI</option>
-                                }
-                            </select>
-                            <span asp-validation-for="FIRMAGUID" class="text-sm text-red-600"></span>
-                        </div>
-                    }
+                    <div>
+                        <label asp-for="FIRMAGUID" class="block text-gray-700 text-sm font-medium mb-2">Firma*</label>
+                        <select asp-for="FIRMAGUID" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Firma Seçiniz</option>
+                            @foreach (var firma in ViewBag.Firmalar ?? new List<VipTransfer.Web.Models.FIRMAModels>())
+                            {
+                                <option value="@firma.FIRMAGUID">@firma.FIRMAADI</option>
+                            }
+                        </select>
+                        <span asp-validation-for="FIRMAGUID" class="text-sm text-red-600"></span>
+                    </div>
+                
+                    <div>
+                        <label asp-for="KILOMETREDEGER" class="block text-gray-700 text-sm font-medium mb-2">Kilometre</label>
+                        <input asp-for="KILOMETREDEGER" type="number" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="0">
+                        <span asp-validation-for="KILOMETREDEGER" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detaylı Bilgiler -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-green-600 p-6 text-white flex items-center">
+                <i class="fas fa-cogs text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Teknik Özellikler</h2>
+                    <p class="mt-1 text-green-100 text-sm">Aracın detaylı teknik özelliklerini belirtin</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label asp-for="YAKITTURU" class="block text-gray-700 text-sm font-medium mb-2">Yakıt Türü</label>
+                        <select asp-for="YAKITTURU" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Yakıt Türü Seçiniz</option>
+                            @foreach (var yakit in ViewBag.YakitTipleri ?? new List<string>())
+                            {
+                                <option value="@yakit">@yakit</option>
+                            }
+                        </select>
+                        <span asp-validation-for="YAKITTURU" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="KOLTUKSAYISI" class="block text-gray-700 text-sm font-medium mb-2">Koltuk Sayısı</label>
+                        <input asp-for="KOLTUKSAYISI" type="number" min="1" max="50" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="4">
+                        <span asp-validation-for="KOLTUKSAYISI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="BAGAJKAPASITESI" class="block text-gray-700 text-sm font-medium mb-2">Bagaj Kapasitesi</label>
+                        <input asp-for="BAGAJKAPASITESI" type="number" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="3">
+                        <span asp-validation-for="BAGAJKAPASITESI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+             
                 </div>
                 
-                <!-- Bilgi Notu -->
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
-                    <div class="flex items-start">
-                        <div class="text-blue-600 mr-3">
-                            <i class="fas fa-info-circle text-xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-medium text-gray-900">Araç Tipleri Hakkında</h3>
-                            <ul class="mt-2 text-sm text-gray-600 space-y-1">
-                                <li><span class="font-medium">Ekonomik:</span> Standart sedan araçlar (4 yolcu)</li>
-                                <li><span class="font-medium">VIP:</span> Lüks sedan araçlar (4 yolcu)</li>
-                                <li><span class="font-medium">Lüks:</span> Minivan ve VIP araçlar (6-12 yolcu)</li>
-                                <li><span class="font-medium">Diğer:</span> Diğer araç tipleri</li>
+                <div class="mt-6">
+                    <label asp-for="OZELNITELIKLER" class="block text-gray-700 text-sm font-medium mb-2">Özel Nitelikler</label>
+                    <textarea asp-for="OZELNITELIKLER" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Araç hakkında özel notlar, lüks özellikler, vs."></textarea>
+                    <span asp-validation-for="OZELNITELIKLER" class="text-sm text-red-600"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fotoğraf Ekleme -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-purple-600 p-6 text-white flex items-center">
+                <i class="fas fa-images text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Araç Fotoğrafları</h2>
+                    <p class="mt-1 text-purple-100 text-sm">En iyi görünüm için yüksek kalite fotoğraflar yükleyin</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-6">
+                    <div x-data="{ files: null }" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <input type="file" name="aracFotograflari" multiple
+                               accept="image/*" 
+                               class="hidden"
+                               id="fileInput"
+                               x-on:change="files = $event.target.files; console.log(files)">
+                        
+                        <label for="fileInput" class="cursor-pointer">
+                            <div class="space-y-4">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                                <div>
+                                    <p class="text-gray-700 font-medium">Fotoğrafları sürükle bırak veya seç</p>
+                                    <p class="text-gray-500 text-sm mt-1">PNG, JPG, JPEG dosya formatları desteklenir</p>
+                                </div>
+                                <button type="button" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition">Dosya Seç</button>
+                            </div>
+                        </label>
+                        
+                        <!-- Seçilen dosyalar listesi -->
+                        <div x-show="files && files.length" class="mt-4">
+                            <h3 class="text-left font-medium text-gray-700 mb-2">Seçilen Dosyalar:</h3>
+                            <ul class="text-left space-y-2">
+                                <template x-for="(file, index) in files" :key="index">
+                                    <li class="flex items-center text-sm text-gray-800">
+                                        <i class="fas fa-file-image text-purple-500 mr-2"></i>
+                                        <span x-text="file.name"></span>
+                                        <span class="ml-2 text-gray-500" x-text="Math.round(file.size/1024) + ' KB'"></span>
+                                    </li>
+                                </template>
                             </ul>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Kaydet Butonu -->
-                <div>
-                    <button type="submit" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
-                        Aracı Kaydet
-                    </button>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                    <div class="flex items-start">
+                        <div class="text-yellow-600 mr-3">
+                            <i class="fas fa-exclamation-circle text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-yellow-800">Önemli Notlar</h3>
+                            <ul class="mt-1 text-sm text-yellow-700 list-disc ml-5">
+                                <li>Fotoğraflar net ve yüksek kalitede olmalıdır</li>
+                                <li>Önerilen fotoğraf boyutları: En az 1200 x 800 piksel</li>
+                                <li>Aracın dış görünümü, iç mekanı ve detayları için farklı açılardan fotoğraflar ekleyin</li>
+                                <li>Maksimum 10 fotoğraf yüklenebilir</li>
+                                <li>Her dosya için maksimum boyut: 5 MB</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+        
+        <!-- Araç Tipleri Bilgisi -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="p-6">
+                <h3 class="font-semibold text-gray-800 text-lg mb-4">Araç Tipleri Hakkında</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex bg-blue-50 p-4 rounded-lg">
+                        <div class="mr-4">
+                            <i class="fas fa-car text-3xl text-blue-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-800">Ekonomik</h4>
+                            <p class="text-sm text-blue-600">Standart sedan araçlar. Genellikle 4 yolcu ve 3 bavul kapasitesi.</p>
+                            <p class="text-sm text-blue-600 mt-1">Örnek: Toyota Corolla, Renault Megane, Ford Focus</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex bg-green-50 p-4 rounded-lg">
+                        <div class="mr-4">
+                            <i class="fas fa-car-side text-3xl text-green-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-800">VIP</h4>
+                            <p class="text-sm text-green-600">Lüks sedan araçlar. Konforlu iç mekan, 4 yolcu ve 3 bavul kapasitesi.</p>
+                            <p class="text-sm text-green-600 mt-1">Örnek: Mercedes E-Class, BMW 5 Serisi, Audi A6</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex bg-purple-50 p-4 rounded-lg">
+                        <div class="mr-4">
+                            <i class="fas fa-shuttle-van text-3xl text-purple-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-purple-800">Lüks</h4>
+                            <p class="text-sm text-purple-600">Minivan ve VIP araçlar. 6-12 yolcu ve daha fazla bavul kapasitesi.</p>
+                            <p class="text-sm text-purple-600 mt-1">Örnek: Mercedes Vito, Volkswagen Caravelle, Toyota Hiace</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex bg-gray-50 p-4 rounded-lg">
+                        <div class="mr-4">
+                            <i class="fas fa-bus-alt text-3xl text-gray-500"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Diğer</h4>
+                            <p class="text-sm text-gray-600">Özel araçlar, minibüsler ve diğer taşıma araçları.</p>
+                            <p class="text-sm text-gray-600 mt-1">Örnek: Büyük yolcu minibüsleri, özel tasarım araçlar</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kaydet Butonu -->
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition flex items-center">
+                <i class="fas fa-save mr-2"></i> Aracı Kaydet
+            </button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    
+    <script>
+        // Dosya yükleme önizleme
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.addEventListener('change', function() {
+                console.log('Files selected:', this.files);
+            });
+        });
+    </script>
 }

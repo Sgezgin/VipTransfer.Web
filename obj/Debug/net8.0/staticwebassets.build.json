@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TNtkR5KvnkTuhC1nEFKrruSJuvlwxLQIZDs9leMu7ts=",
+  "Hash": "yxWJN+4DA7KmKRcEpcdnM0M6juJ++lbtvsZ2KLk3SDE=",
   "Source": "VipTransfer.Web",
   "BasePath": "_content/VipTransfer.Web",
   "Mode": "Default",
@@ -1193,6 +1193,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG",
+      "SourceId": "VipTransfer.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
+      "BasePath": "_content/VipTransfer.Web",
+      "RelativePath": "uploads/araclar/5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG"
     }
   ]
 }

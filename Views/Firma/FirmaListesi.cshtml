@@ -1,0 +1,158 @@
+@model List<VipTransfer.Web.Models.FIRMAModels>
+@{
+    ViewData["Title"] = "Firma Listesi";
+}
+
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Firma Yönetimi</h1>
+        <a href="/Firma/Dashboard" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Dashboard'a Dön
+        </a>
+    </div>
+    
+    <!-- Filtreler -->
+    <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+        <div x-data="{ open: false }">
+            <button x-on:click="open = !open" class="flex items-center justify-between w-full px-4 py-2 text-left">
+                <span class="font-medium text-gray-800">Filtreler</span>
+                <i class="fas" x-bind:class="open ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button>
+            
+            <div x-show="open" x-transition.duration.300ms class="mt-4">
+                <form action="/Firma/FirmaListesi" method="get" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="firmaAdi" class="block text-sm font-medium text-gray-700 mb-1">Firma Adı</label>
+                        <input type="text" id="firmaAdi" name="firmaAdi" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    
+                    <div>
+                        <label for="aktif" class="block text-sm font-medium text-gray-700 mb-1">Durum</label>
+                        <select id="aktif" name="aktif" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Tümü</option>
+                            <option value="1">Aktif</option>
+                            <option value="0">Pasif</option>
+                        </select>
+                    </div>
+                    
+                    <div class="md:flex items-end">
+                        <button type="submit" class="w-full md:w-auto bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                            Filtrele
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firma Listesi -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="p-4 bg-blue-700 text-white flex justify-between items-center">
+            <h2 class="text-xl font-semibold">Firmalar</h2>
+            <a href="/Firma/YeniFirma" class="bg-white text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-50 transition">
+                Yeni Firma Ekle
+            </a>
+        </div>
+        
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Firma Adı
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İletişim Bilgileri
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Vergi Bilgileri
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Lisans Bilgileri
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Durum
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var firma in Model)
+                        {
+                            <tr>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-900">@firma.FIRMAADI</div>
+                                    <div class="text-xs text-gray-500">ID: @(firma.FIRMAGUID?.Substring(0, 8))</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">
+                                        <i class="fas fa-envelope text-gray-400 mr-1"></i> @firma.EMAIL
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        <i class="fas fa-phone text-gray-400 mr-1"></i> @firma.TELEFON1
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">@firma.VERGIDAIRESI</div>
+                                    <div class="text-sm text-gray-500">@firma.VERGINO</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">@firma.LISANSBAS.ToString("dd.MM.yyyy") - @firma.LISANSBIT.ToString("dd.MM.yyyy")</div>
+                                    <div class="text-sm text-gray-500">
+                                        @if (firma.LISANSBIT > DateTime.Now)
+                                        {
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Aktif
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Süresi Dolmuş
+                                            </span>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if (firma.AKTIF == 1)
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Aktif
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Pasif
+                                        </span>
+                                    }
+                                </td>
+                           <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+    <a href="/Firma/FirmaDuzenle/@firma.FIRMAGUID" class="text-blue-600 hover:text-blue-900 mr-3">
+        Düzenle
+    </a>
+ 
+</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center">
+                <i class="fas fa-building text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Henüz firma bulunmuyor</h3>
+                <p class="text-gray-500 mb-6">Sistem üzerinde hiç firma kaydı bulunamadı.</p>
+                <a href="/Firma/YeniFirma" class="bg-blue-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition">
+                    Yeni Firma Ekle
+                </a>
+            </div>
+        }
+    </div>
+</div>

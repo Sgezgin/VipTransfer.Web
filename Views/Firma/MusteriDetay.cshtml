@@ -1,0 +1,182 @@
+@model VipTransfer.Web.Models.MUSTERIModels
+@{
+    ViewData["Title"] = "Müşteri Detayları";
+    var rezervasyonlar = ViewBag.Rezervasyonlar as List<VipTransfer.Web.Models.REZERVASYONModels>;
+}
+
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Müşteri Detayları</h1>
+        <a href="/Firma/MusteriListesi" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Müşteri Listesine Dön
+        </a>
+    </div>
+    
+    <!-- Müşteri Bilgileri -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+        <div class="p-4 bg-green-600 text-white">
+            <h2 class="text-xl font-semibold">Müşteri Bilgileri</h2>
+        </div>
+        
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-gray-700 mb-4">Kişisel Bilgiler</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">Ad Soyad</p>
+                            <p class="font-medium">@(Model.MADISOYADI ?? "Belirtilmemiş")</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">E-posta</p>
+                            <p class="font-medium">@(Model.EMAIL ?? "Belirtilmemiş")</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Telefon</p>
+                            <p class="font-medium">@(Model.TELEFON1 ?? "Belirtilmemiş")</p>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.TELEFON2))
+                        {
+                            <div>
+                                <p class="text-sm text-gray-500">Alternatif Telefon</p>
+                                <p class="font-medium">@Model.TELEFON2</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold text-gray-700 mb-4">Adres ve Fatura Bilgileri</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm text-gray-500">Adres</p>
+                            <p class="font-medium">@(Model.MADRES ?? "Belirtilmemiş")</p>
+                        </div>
+                        
+                        @if (Model.MFATURALI == 1)
+                        {
+                            <div class="mt-4">
+                                <div class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full mb-2">
+                                    Faturalı
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Firma Adı</p>
+                                    <p class="font-medium">@(Model.MFIRMAADI ?? "Belirtilmemiş")</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Vergi Dairesi</p>
+                                    <p class="font-medium">@(Model.MVERGIDAIRESI ?? "Belirtilmemiş")</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Vergi No</p>
+                                    <p class="font-medium">@(Model.MVERGINO > 0 ? Model.MVERGINO.ToString() : "Belirtilmemiş")</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Fatura Adresi</p>
+                                    <p class="font-medium">@(Model.MFATURAADRES ?? "Belirtilmemiş")</p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="inline-block px-2 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded-full">
+                                Faturasız
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Müşteri Rezervasyon Geçmişi -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="p-4 bg-blue-700 text-white flex justify-between items-center">
+            <h2 class="text-xl font-semibold">Rezervasyon Geçmişi</h2>
+            <span class="bg-white text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                Toplam: @(rezervasyonlar?.Count ?? 0)
+            </span>
+        </div>
+        
+        @if (rezervasyonlar != null && rezervasyonlar.Count > 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tarih/Saat
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Güzergah
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ücret
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Durum
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var rezervasyon in rezervasyonlar)
+                        {
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@rezervasyon.REZTARIH.ToString("dd.MM.yyyy")</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.REZSAAT</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">@rezervasyon.NERDEN</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.NEREYE</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-blue-700">@rezervasyon.UCRET ₺</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if (rezervasyon.IPTAL == 1)
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            İptal Edildi
+                                        </span>
+                                    }
+                                    else if (!string.IsNullOrEmpty(rezervasyon.ALTFIRMA) && rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI"))
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Onaylandı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Onay Bekliyor
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/Rezervasyon/Details/@rezervasyon.REZGUID" class="text-blue-600 hover:text-blue-900">
+                                        Detaylar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center">
+                <i class="fas fa-calendar-times text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Henüz bir rezervasyon bulunmuyor</h3>
+                <p class="text-gray-500 mb-6">Bu müşteriye ait herhangi bir rezervasyon kaydı bulunmamaktadır.</p>
+                <a href="/Rezervasyon/Create" class="bg-blue-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition">
+                    Yeni Rezervasyon Oluştur
+                </a>
+            </div>
+        }
+    </div>
+</div>

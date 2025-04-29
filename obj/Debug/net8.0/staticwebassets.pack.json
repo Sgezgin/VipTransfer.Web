@@ -245,6 +245,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG",
+      "PackagePath": "staticwebassets\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.VipTransfer.Web.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

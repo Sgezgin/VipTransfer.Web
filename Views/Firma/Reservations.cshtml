@@ -1,0 +1,207 @@
+@model List<VipTransfer.Web.Models.REZERVASYONModels>
+@{
+    ViewData["Title"] = "Rezervasyonlar";
+    var musteriler = ViewBag.Musteriler as List<VipTransfer.Web.Models.MUSTERIModels>;
+    var araclar = ViewBag.Araclar as List<VipTransfer.Web.Models.ARACLARModels>;
+}
+
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Firma Rezervasyonları</h1>
+    </div>
+    
+    <!-- Filtreler -->
+    <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+        <div x-data="{ open: false }">
+            @* <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-2 text-left">
+                <span class="font-medium text-gray-800">Filtreler</span>
+                <i class="fas" :class="open ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button> *@
+            
+            <div x-show="open" x-transition.duration.300ms class="mt-4">
+                <form action="/Firma/Reservations" method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label for="dateFrom" class="block text-sm font-medium text-gray-700 mb-1">Başlangıç Tarihi</label>
+                        <input type="date" id="dateFrom" name="dateFrom" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    
+                    <div>
+                        <label for="dateTo" class="block text-sm font-medium text-gray-700 mb-1">Bitiş Tarihi</label>
+                        <input type="date" id="dateTo" name="dateTo" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Durum</label>
+                        <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">Tümü</option>
+                            <option value="active">Aktif</option>
+                            <option value="approved">Onaylanmış</option>
+                            <option value="canceled">İptal Edilmiş</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Arama</label>
+                        <input type="text" id="search" name="search" placeholder="Müşteri adı, lokasyon..." class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    
+                    <div class="md:col-span-4 flex justify-end">
+                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                            Filtrele
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rezervasyon Listesi -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        @if (Model.Count > 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Rezervasyon No
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tarih/Saat
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Müşteri
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Güzergah
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Araç
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ücret
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Durum
+                            </th>
+                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var rezervasyon in Model)
+                        {
+                            var musteri = musteriler?.FirstOrDefault(m => m.MUSTERIGUID == rezervasyon.MUSTERIGUID);
+                            var arac = araclar?.FirstOrDefault(a => a.ARACGUID == rezervasyon.ARACGUID);
+                            
+                            <tr>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@rezervasyon.REZGUID.Substring(0, 8).ToUpper()</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@rezervasyon.REZTARIH.ToString("dd.MM.yyyy")</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.REZSAAT</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    @if (musteri != null)
+                                    {
+                                        <div class="text-sm text-gray-900">@musteri.MADISOYADI</div>
+                                        <div class="text-sm text-gray-500">@musteri.TELEFON1</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-sm text-gray-500">-</div>
+                                    }
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="text-sm text-gray-900">@rezervasyon.NERDEN</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.NEREYE</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    @if (arac != null)
+                                    {
+                                        <div class="text-sm text-gray-900">@arac.MARKA @arac.MODEL</div>
+                                        <div class="text-sm text-gray-500">@arac.PLAKA</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-sm text-gray-500">-</div>
+                                    }
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-blue-700">@rezervasyon.UCRET ₺</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    @if (rezervasyon.IPTAL == 1)
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            İptal Edildi
+                                        </span>
+                                    }
+                                    else if (rezervasyon.ALTFIRMA != null && rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI"))
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Onaylandı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Onay Bekliyor
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="/Rezervasyon/Details/@rezervasyon.REZGUID" class="text-blue-600 hover:text-blue-900 mr-2">
+                                        Detaylar
+                                    </a>
+                                    
+                                    @if (rezervasyon.IPTAL == 0 && (rezervasyon.ALTFIRMA == null || !rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI")))
+                                    {
+                                        <form asp-action="ApproveReservation" asp-route-id="@rezervasyon.REZGUID" method="post" class="inline">
+                                            <button type="submit" class="text-green-600 hover:text-green-900">Onayla</button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center">
+                <i class="fas fa-calendar-times text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Henüz bir rezervasyon bulunmuyor</h3>
+                <p class="text-gray-500">Rezervasyonlar burada listelenecek.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Sayfa yüklendiğinde URL'den parametre değerlerini al ve formda seç
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            if (params.has('dateFrom')) {
+                document.getElementById('dateFrom').value = params.get('dateFrom');
+            }
+            
+            if (params.has('dateTo')) {
+                document.getElementById('dateTo').value = params.get('dateTo');
+            }
+            
+            if (params.has('status')) {
+                document.getElementById('status').value = params.get('status');
+            }
+            
+            if (params.has('search')) {
+                document.getElementById('search').value = params.get('search');
+            }
+        });
+    </script>
+}

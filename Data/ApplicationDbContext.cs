@@ -20,6 +20,7 @@ namespace VipTransfer.Web.Data
         public DbSet<KULLANICIModels> KULLANICI { get; set; }
         public DbSet<FIRMAModels> FIRMA { get; set; }
         public DbSet<ARACLARModels> ARACLAR { get; set; }
+        public DbSet<ARACFOTOModels> ARACFOTO { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

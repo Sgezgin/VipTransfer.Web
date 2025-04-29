@@ -1,0 +1,133 @@
+@model VipTransfer.Web.Models.FIRMAModels
+@{
+    ViewData["Title"] = "Yeni Firma Ekle";
+}
+
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Yeni Firma Ekle</h1>
+        <a href="/Firma/FirmaListesi" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Firma Listesine Dön
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="bg-blue-700 p-6 text-white">
+            <h2 class="text-xl font-semibold">Firma Bilgileri</h2>
+            <p class="mt-2 text-blue-100">Lütfen firma bilgilerini eksiksiz doldurun</p>
+        </div>
+        
+        <div class="p-6">
+            <form asp-action="YeniFirma" method="post">
+                <div asp-validation-summary="All" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-4"></div>
+                
+                <!-- Temel Bilgiler -->
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Temel Bilgiler</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label asp-for="FIRMAADI" class="block text-gray-700 text-sm font-medium mb-2">Firma Adı *</label>
+                        <input asp-for="FIRMAADI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Firma adı">
+                        <span asp-validation-for="FIRMAADI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="EMAIL" class="block text-gray-700 text-sm font-medium mb-2">E-posta</label>
+                        <input asp-for="EMAIL" type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="firma@example.com">
+                        <span asp-validation-for="EMAIL" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TELEFON1" class="block text-gray-700 text-sm font-medium mb-2">Telefon 1</label>
+                        <input asp-for="TELEFON1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="0212 XXX XX XX">
+                        <span asp-validation-for="TELEFON1" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TELEFON2" class="block text-gray-700 text-sm font-medium mb-2">Telefon 2</label>
+                        <input asp-for="TELEFON2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="0212 XXX XX XX">
+                        <span asp-validation-for="TELEFON2" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TELEFON3" class="block text-gray-700 text-sm font-medium mb-2">Telefon 3</label>
+                        <input asp-for="TELEFON3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="0212 XXX XX XX">
+                        <span asp-validation-for="TELEFON3" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="AKTIF" class="block text-gray-700 text-sm font-medium mb-2">Durum</label>
+                        <select asp-for="AKTIF" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="1">Aktif</option>
+                            <option value="0">Pasif</option>
+                        </select>
+                        <span asp-validation-for="AKTIF" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+                
+                <!-- Vergi Bilgileri -->
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Vergi Bilgileri</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label asp-for="VERGIDAIRESI" class="block text-gray-700 text-sm font-medium mb-2">Vergi Dairesi</label>
+                        <input asp-for="VERGIDAIRESI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Vergi dairesi">
+                        <span asp-validation-for="VERGIDAIRESI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="VERGINO" class="block text-gray-700 text-sm font-medium mb-2">Vergi No</label>
+                        <input asp-for="VERGINO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Vergi no">
+                        <span asp-validation-for="VERGINO" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="KDVORAN" class="block text-gray-700 text-sm font-medium mb-2">KDV Oranı (%)</label>
+                        <input asp-for="KDVORAN" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="18">
+                        <span asp-validation-for="KDVORAN" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+                
+                <!-- Lisans Bilgileri -->
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Lisans Bilgileri</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label asp-for="LISANSKODU" class="block text-gray-700 text-sm font-medium mb-2">Lisans Kodu</label>
+                        <input asp-for="LISANSKODU" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Lisans kodu">
+                        <span asp-validation-for="LISANSKODU" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TIPI" class="block text-gray-700 text-sm font-medium mb-2">Firma Tipi</label>
+                        <select asp-for="TIPI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="1">Ana Firma</option>
+                            <option value="2">Alt Firma</option>
+                        </select>
+                        <span asp-validation-for="TIPI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="LISANSBAS" class="block text-gray-700 text-sm font-medium mb-2">Lisans Başlangıç</label>
+                        <input asp-for="LISANSBAS" type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <span asp-validation-for="LISANSBAS" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="LISANSBIT" class="block text-gray-700 text-sm font-medium mb-2">Lisans Bitiş</label>
+                        <input asp-for="LISANSBIT" type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <span asp-validation-for="LISANSBIT" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+                
+                <!-- Kaydet Butonu -->
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
+                        Firmayı Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

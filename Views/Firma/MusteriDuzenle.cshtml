@@ -1,0 +1,129 @@
+@model VipTransfer.Web.Models.MUSTERIModels
+@{
+    ViewData["Title"] = "Müşteri Düzenle";
+}
+
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Müşteri Düzenle</h1>
+        <a href="/Firma/MusteriListesi" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Müşteri Listesine Dön
+        </a>
+    </div>
+    
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="bg-green-600 p-6 text-white">
+            <h2 class="text-xl font-semibold">Müşteri Bilgileri</h2>
+            <p class="mt-2 text-green-100">Müşteri bilgilerini güncelleyin</p>
+        </div>
+        
+        <div class="p-6">
+            <form asp-action="MusteriDuzenle" method="post">
+                <div asp-validation-summary="All" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded mb-4"></div>
+                
+                <!-- Gizli MUSTERIGUID alanı -->
+                <input type="hidden" asp-for="MUSTERIGUID" />
+                
+                <!-- Kişisel Bilgiler -->
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Kişisel Bilgiler</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <label asp-for="MADI" class="block text-gray-700 text-sm font-medium mb-2">Ad</label>
+                        <input asp-for="MADI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Müşteri adı">
+                        <span asp-validation-for="MADI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="MSOYADI" class="block text-gray-700 text-sm font-medium mb-2">Soyad</label>
+                        <input asp-for="MSOYADI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Müşteri soyadı">
+                        <span asp-validation-for="MSOYADI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="EMAIL" class="block text-gray-700 text-sm font-medium mb-2">E-posta</label>
+                        <input asp-for="EMAIL" type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="ornek@email.com">
+                        <span asp-validation-for="EMAIL" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TELEFON1" class="block text-gray-700 text-sm font-medium mb-2">Telefon</label>
+                        <input asp-for="TELEFON1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="05XX XXX XX XX">
+                        <span asp-validation-for="TELEFON1" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TELEFON2" class="block text-gray-700 text-sm font-medium mb-2">Alternatif Telefon (Opsiyonel)</label>
+                        <input asp-for="TELEFON2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="05XX XXX XX XX">
+                        <span asp-validation-for="TELEFON2" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label asp-for="MADRES" class="block text-gray-700 text-sm font-medium mb-2">Adres</label>
+                        <textarea asp-for="MADRES" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" rows="3" placeholder="Adres bilgisi"></textarea>
+                        <span asp-validation-for="MADRES" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+                
+                <!-- Fatura Bilgileri -->
+                <div x-data="{ faturali: @(Model.MFATURALI == 1 ? "true" : "false") }">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Fatura Bilgileri</h3>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center">
+                            <input id="faturasiz" name="MFATURALI" type="radio" value="0" 
+                                   @(Model.MFATURALI != 1 ? "checked" : "")
+                                   x-on:change="faturali = false" class="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500">
+                            <label for="faturasiz" class="ml-2 block text-sm text-gray-700">Faturasız</label>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <input id="faturali" name="MFATURALI" type="radio" value="1"
+                                   @(Model.MFATURALI == 1 ? "checked" : "")
+                                   x-on:change="faturali = true" class="h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500">
+                            <label for="faturali" class="ml-2 block text-sm text-gray-700">Faturalı</label>
+                        </div>
+                    </div>
+                    
+                    <div x-show="faturali" x-transition class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label asp-for="MFIRMAADI" class="block text-gray-700 text-sm font-medium mb-2">Firma Adı</label>
+                                <input asp-for="MFIRMAADI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Firma adı">
+                                <span asp-validation-for="MFIRMAADI" class="text-sm text-red-600"></span>
+                            </div>
+                            
+                            <div>
+                                <label asp-for="MVERGIDAIRESI" class="block text-gray-700 text-sm font-medium mb-2">Vergi Dairesi</label>
+                                <input asp-for="MVERGIDAIRESI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Vergi dairesi">
+                                <span asp-validation-for="MVERGIDAIRESI" class="text-sm text-red-600"></span>
+                            </div>
+                            
+                            <div>
+                                <label asp-for="MVERGINO" class="block text-gray-700 text-sm font-medium mb-2">Vergi Numarası</label>
+                                <input asp-for="MVERGINO" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Vergi numarası">
+                                <span asp-validation-for="MVERGINO" class="text-sm text-red-600"></span>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label asp-for="MFATURAADRES" class="block text-gray-700 text-sm font-medium mb-2">Fatura Adresi</label>
+                                <textarea asp-for="MFATURAADRES" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" rows="3" placeholder="Fatura adresi"></textarea>
+                                <span asp-validation-for="MFATURAADRES" class="text-sm text-red-600"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kaydet Butonu -->
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-green-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                        Değişiklikleri Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+}

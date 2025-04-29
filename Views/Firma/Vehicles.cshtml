@@ -1,0 +1,142 @@
+@model List<VipTransfer.Web.Models.ARACLARModels>
+@{
+    ViewData["Title"] = "Araç Yönetimi";
+}
+
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Araç Yönetimi</h1>
+        <a href="/Firma/AddVehicle" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition">
+            <i class="fas fa-plus mr-2"></i> Yeni Araç Ekle
+        </a>
+    </div>
+    
+    <!-- Araç Listesi -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        @if (Model.Count > 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Plaka
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Marka/Model
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Seri
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tip
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var arac in Model)
+                        {
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">@arac.PLAKA</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@arac.MARKA @arac.MODEL</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@arac.SERI</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">
+                                        @switch (arac.TIP)
+                                        {
+                                            case 1:
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                    Ekonomik
+                                                </span>
+                                                break;
+                                            case 2:
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    VIP
+                                                </span>
+                                                break;
+                                            case 3:
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                                    Lüks
+                                                </span>
+                                                break;
+                                            default:
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                                    Diğer
+                                                </span>
+                                                break;
+                                        }
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <a href="/Firma/EditVehicle/@arac.ARACGUID" class="text-blue-600 hover:text-blue-900 mr-3">
+                                        Düzenle
+                                    </a>
+                                    <form asp-action="DeleteVehicle" asp-route-id="@arac.ARACGUID" method="post" class="inline" onsubmit="return confirm('Bu aracı silmek istediğinize emin misiniz?');">
+                                        <button type="submit" class="text-red-600 hover:text-red-900">Sil</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center">
+                <i class="fas fa-car text-5xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Henüz bir araç bulunmuyor</h3>
+                <p class="text-gray-500 mb-6">Yeni bir araç eklemek için aşağıdaki butona tıklayın.</p>
+                <a href="/Firma/AddVehicle" class="bg-blue-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition">
+                    Yeni Araç Ekle
+                </a>
+            </div>
+        }
+    </div>
+
+    <!-- Araç Tipleri Açıklaması -->
+    <div class="bg-white rounded-xl shadow-md p-6 mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Araç Tipleri</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="flex items-start">
+                <div class="p-3 rounded-full bg-blue-100 mr-3">
+                    <i class="fas fa-car text-xl text-blue-700"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold">Ekonomik</h3>
+                    <p class="text-sm text-gray-600">Ekonomik sınıf araçlar, 4 yolcu ve 3 bavul kapasitesine sahiptir.</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start">
+                <div class="p-3 rounded-full bg-green-100 mr-3">
+                    <i class="fas fa-car-side text-xl text-green-700"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold">VIP</h3>
+                    <p class="text-sm text-gray-600">VIP sınıf araçlar, 4 yolcu ve 3 bavul kapasitesine sahiptir, lüks donanımlıdır.</p>
+                </div>
+            </div>
+            
+            <div class="flex items-start">
+                <div class="p-3 rounded-full bg-purple-100 mr-3">
+                    <i class="fas fa-shuttle-van text-xl text-purple-700"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold">Lüks</h3>
+                    <p class="text-sm text-gray-600">Lüks sınıf araçlar, 6-12 yolcu ve daha fazla bavul kapasitesine sahiptir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
