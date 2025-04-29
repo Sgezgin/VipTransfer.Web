@@ -1,0 +1,169 @@
+@model VipTransfer.Web.Models.ARACLARModels
+@{
+    ViewData["Title"] = "Araç Düzenle";
+}
+
+<div class="max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Araç Düzenle</h1>
+        <a href="/Firma/VehicleDetails/@Model.ARACGUID" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Araç Detayına Dön
+        </a>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <span class="font-bold">Hata!</span> @TempData["ErrorMessage"]
+        </div>
+    }
+    
+    <form asp-action="EditVehicle" method="post" class="space-y-8">
+        <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+        
+        <!-- Gizli alan olarak ARACGUID -->
+        <input type="hidden" asp-for="ARACGUID" />
+        
+        <!-- Ana Bilgiler -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-blue-700 p-6 text-white flex items-center">
+                <i class="fas fa-car-side text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Temel Araç Bilgileri</h2>
+                    <p class="mt-1 text-blue-100 text-sm">Aracın ana bilgilerini güncelleyin</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label asp-for="MARKA" class="block text-gray-700 text-sm font-medium mb-2">Marka*</label>
+                        <input asp-for="MARKA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Mercedes">
+                        <span asp-validation-for="MARKA" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="MODEL" class="block text-gray-700 text-sm font-medium mb-2">Model*</label>
+                        <input asp-for="MODEL" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="E-Class">
+                        <span asp-validation-for="MODEL" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="SERI" class="block text-gray-700 text-sm font-medium mb-2">Seri</label>
+                        <input asp-for="SERI" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="E200">
+                        <span asp-validation-for="SERI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="PLAKA" class="block text-gray-700 text-sm font-medium mb-2">Plaka*</label>
+                        <input asp-for="PLAKA" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="34ABC123">
+                        <span asp-validation-for="PLAKA" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="YILI" class="block text-gray-700 text-sm font-medium mb-2">Model Yılı</label>
+                        <input asp-for="YILI" type="number" min="1990" max="@DateTime.Now.Year" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="@DateTime.Now.Year">
+                        <span asp-validation-for="YILI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="RENK" class="block text-gray-700 text-sm font-medium mb-2">Renk</label>
+                        <select asp-for="RENK" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Renk Seçiniz</option>
+                            @foreach (var renk in ViewBag.Renkler ?? new List<string>())
+                            {
+                                <option value="@renk">@renk</option>
+                            }
+                        </select>
+                        <span asp-validation-for="RENK" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="TIP" class="block text-gray-700 text-sm font-medium mb-2">Araç Tipi*</label>
+                        <select asp-for="TIP" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="1">Ekonomik</option>
+                            <option value="2">VIP</option>
+                            <option value="3">Lüks</option>
+                            <option value="4">Diğer</option>
+                        </select>
+                        <span asp-validation-for="TIP" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="FIRMAGUID" class="block text-gray-700 text-sm font-medium mb-2">Firma*</label>
+                        <select asp-for="FIRMAGUID" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Firma Seçiniz</option>
+                            @foreach (var firma in ViewBag.Firmalar ?? new List<VipTransfer.Web.Models.FIRMAModels>())
+                            {
+                                <option value="@firma.FIRMAGUID">@firma.FIRMAADI</option>
+                            }
+                        </select>
+                        <span asp-validation-for="FIRMAGUID" class="text-sm text-red-600"></span>
+                    </div>
+                
+                    <div>
+                        <label asp-for="KILOMETREDEGER" class="block text-gray-700 text-sm font-medium mb-2">Kilometre</label>
+                        <input asp-for="KILOMETREDEGER" type="number" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="0">
+                        <span asp-validation-for="KILOMETREDEGER" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detaylı Bilgiler -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-green-600 p-6 text-white flex items-center">
+                <i class="fas fa-cogs text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Teknik Özellikler</h2>
+                    <p class="mt-1 text-green-100 text-sm">Aracın detaylı teknik özelliklerini belirtin</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label asp-for="YAKITTURU" class="block text-gray-700 text-sm font-medium mb-2">Yakıt Türü</label>
+                        <select asp-for="YAKITTURU" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Yakıt Türü Seçiniz</option>
+                            @foreach (var yakit in ViewBag.YakitTipleri ?? new List<string>())
+                            {
+                                <option value="@yakit">@yakit</option>
+                            }
+                        </select>
+                        <span asp-validation-for="YAKITTURU" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="KOLTUKSAYISI" class="block text-gray-700 text-sm font-medium mb-2">Koltuk Sayısı</label>
+                        <input asp-for="KOLTUKSAYISI" type="number" min="1" max="50" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="4">
+                        <span asp-validation-for="KOLTUKSAYISI" class="text-sm text-red-600"></span>
+                    </div>
+                    
+                    <div>
+                        <label asp-for="BAGAJKAPASITESI" class="block text-gray-700 text-sm font-medium mb-2">Bagaj Kapasitesi</label>
+                        <input asp-for="BAGAJKAPASITESI" type="number" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="3">
+                        <span asp-validation-for="BAGAJKAPASITESI" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label asp-for="OZELNITELIKLER" class="block text-gray-700 text-sm font-medium mb-2">Özel Nitelikler</label>
+                    <textarea asp-for="OZELNITELIKLER" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Araç hakkında özel notlar, lüks özellikler, vs."></textarea>
+                    <span asp-validation-for="OZELNITELIKLER" class="text-sm text-red-600"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kaydet Butonu -->
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition flex items-center">
+                <i class="fas fa-save mr-2"></i> Değişiklikleri Kaydet
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

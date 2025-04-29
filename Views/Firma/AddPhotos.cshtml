@@ -1,0 +1,192 @@
+@model VipTransfer.Web.Models.ARACLARModels
+@{
+    ViewData["Title"] = "Araç Fotoğrafları Ekle";
+    var mevcut_fotograflar = ViewBag.Fotograflar as List<VipTransfer.Web.Models.ARACFOTOModels> ?? new List<VipTransfer.Web.Models.ARACFOTOModels>();
+}
+
+<div class="max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Araç Fotoğrafları</h1>
+        <a href="/Firma/VehicleDetails/@Model.ARACGUID" class="text-blue-700 hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i> Araç Detayına Dön
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <span class="font-bold">Başarılı!</span> @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <span class="font-bold">Hata!</span> @TempData["ErrorMessage"]
+        </div>
+    }
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Mevcut Fotoğraflar -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-blue-700 p-6 text-white flex items-center">
+                <i class="fas fa-images text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Mevcut Fotoğraflar</h2>
+                    <p class="mt-1 text-blue-100 text-sm">@mevcut_fotograflar.Count fotoğraf yüklenmiş</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                @if (mevcut_fotograflar.Any())
+                {
+                    <div class="grid grid-cols-2 gap-4">
+                        @foreach (var foto in mevcut_fotograflar)
+                        {
+                            <div class="relative group">
+                                <img src="@foto.FOTOYOLU" alt="Araç Fotoğrafı" class="w-full h-40 object-cover rounded-lg" />
+                                <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center rounded-lg">
+                                    <form asp-action="DeletePhoto" asp-route-id="@foto.FOTOGUID" asp-route-aracId="@Model.ARACGUID" method="post" 
+                                          onsubmit="return confirm('Bu fotoğrafı silmek istediğinize emin misiniz?');">
+                                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+                                            <i class="fas fa-trash-alt"></i> Sil
+                                        </button>
+                                    </form>
+                                </div>
+                                <p class="mt-1 text-sm text-gray-500">Sıra: @foto.SIRANO</p>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-12">
+                        <i class="fas fa-image text-gray-300 text-5xl mb-4"></i>
+                        <p class="text-gray-500">Henüz fotoğraf yüklenmemiş</p>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <!-- Yeni Fotoğraf Yükleme -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-green-600 p-6 text-white flex items-center">
+                <i class="fas fa-cloud-upload-alt text-3xl mr-4"></i>
+                <div>
+                    <h2 class="text-xl font-semibold">Fotoğraf Yükle</h2>
+                    <p class="mt-1 text-green-100 text-sm">Yeni fotoğraflar ekleyin</p>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <form asp-action="AddPhotos" asp-route-id="@Model.ARACGUID" method="post" enctype="multipart/form-data">
+                    <div class="mb-6">
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                            <input type="file" name="Fotograflar" multiple accept="image/*" class="hidden" id="fileInput" />
+                            <label for="fileInput" class="cursor-pointer block">
+                                <div class="flex flex-col items-center">
+                                    <i class="fas fa-cloud-upload-alt text-5xl text-gray-400 mb-4"></i>
+                                    <h3 class="text-lg font-medium text-gray-700 mb-2">Fotoğrafları sürükleyin veya seçin</h3>
+                                    <p class="text-gray-500 text-sm mb-4">PNG, JPG veya JPEG formatı desteklenir</p>
+                                    <span class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">Dosya Seç</span>
+                                </div>
+                            </label>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">Maksimum 10 fotoğraf, her biri en fazla 5MB</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="baslangicSira" class="block text-gray-700 text-sm font-medium mb-2">Başlangıç Sıra Numarası</label>
+                        <input type="number" name="BaslangicSira" id="baslangicSira" value="@(mevcut_fotograflar.Any() ? mevcut_fotograflar.Max(f => f.SIRANO) + 1 : 1)" min="1" max="100" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                        <p class="mt-1 text-sm text-gray-500">Mevcut fotoğraflardan sonra veya belirli bir sıra numarasından başlatmak için</p>
+                    </div>
+                    
+                    <div id="selectedFiles" class="mb-4 hidden">
+                        <h3 class="font-medium text-gray-700 mb-2">Seçilen Dosyalar:</h3>
+                        <ul id="fileList" class="text-sm text-gray-600 space-y-1"></ul>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center">
+                            <i class="fas fa-upload mr-2"></i> Fotoğrafları Yükle
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fotoğraf Yükleme İpuçları -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mt-6">
+        <div class="p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Fotoğraf Yükleme İpuçları</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <div class="text-blue-600 mr-3">
+                            <i class="fas fa-lightbulb text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-blue-800 mb-2">Kaliteli Fotoğraflar Yükleyin</h4>
+                            <ul class="text-sm text-blue-700 space-y-1 list-disc ml-4">
+                                <li>Yüksek çözünürlüklü, net ve parlak fotoğraflar tercih edin</li>
+                                <li>Gün ışığında çekilmiş fotoğraflar daha iyi sonuç verir</li>
+                                <li>Araç tüm detaylarıyla görünmelidir</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 rounded-lg p-4">
+                    <div class="flex items-start">
+                        <div class="text-green-600 mr-3">
+                            <i class="fas fa-camera text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-green-800 mb-2">Farklı Açılardan Çekim Yapın</h4>
+                            <ul class="text-sm text-green-700 space-y-1 list-disc ml-4">
+                                <li>Ön, arka, yan ve açılı fotoğraflar ekleyin</li>
+                                <li>İç mekan fotoğrafları da ekleyin (koltuklar, gösterge paneli)</li>
+                                <li>Bagaj alanı ve motor bölümünü de görüntüleyin</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Dosya seçildikten sonra dosya listesini gösterme
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const fileList = document.getElementById('fileList');
+            const selectedFiles = document.getElementById('selectedFiles');
+            
+            // Listeyi temizle
+            fileList.innerHTML = '';
+            
+            if (this.files.length > 0) {
+                selectedFiles.classList.remove('hidden');
+                
+                for (let i = 0; i < this.files.length; i++) {
+                    const file = this.files[i];
+                    const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                    
+                    const listItem = document.createElement('li');
+                    listItem.className = "flex items-center";
+                    listItem.innerHTML = `
+                        <i class="fas fa-file-image text-green-500 mr-2"></i>
+                        <span>${file.name}</span>
+                        <span class="ml-2 text-gray-500">${fileSize}</span>
+                    `;
+                    fileList.appendChild(listItem);
+                }
+            } else {
+                selectedFiles.classList.add('hidden');
+            }
+        });
+    </script>
+}

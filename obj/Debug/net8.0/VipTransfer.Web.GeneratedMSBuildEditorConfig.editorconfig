@@ -26,6 +26,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/project2/VipTransfer.Web/Views/Firma/AddPhotos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcQWRkUGhvdG9zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/project2/VipTransfer.Web/Views/Firma/AddVehicle.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcQWRkVmVoaWNsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -36,6 +40,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/project2/VipTransfer.Web/Views/Firma/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRGFzaGJvYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/EditVehicle.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRWRpdFZlaGljbGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/project2/VipTransfer.Web/Views/Firma/FirmaDuzenle.cshtml]
@@ -64,6 +72,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/project2/VipTransfer.Web/Views/Firma/VehicleDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcVmVoaWNsZURldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Firma/Vehiclereservations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcVmVoaWNsZXJlc2VydmF0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/project2/VipTransfer.Web/Views/Firma/Vehicles.cshtml]

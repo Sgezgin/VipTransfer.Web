@@ -163,73 +163,6 @@ namespace VipTransfer.Web.Controllers
             return View(araclar);
         }
 
-        // Araç düzenleme sayfası
-        [HttpGet]
-        public IActionResult EditVehicle(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return RedirectToAction("Vehicles");
-            }
-
-            // Aracı getir
-            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == id);
-            if (arac == null)
-            {
-                return NotFound();
-            }
-
-            // Oturum kontrolü
-            string username = HttpContext.Session.GetString("Username");
-            string userType = HttpContext.Session.GetString("UserType");
-            string firmaGuid = HttpContext.Session.GetString("UserGUID");
-
-            // Yetki kontrolü
-            bool hasPermission = false;
-            if (userType == "Firma" && arac.FIRMAGUID == firmaGuid)
-            {
-                hasPermission = true;
-            }
-            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
-            {
-                hasPermission = true;
-            }
-
-            if (!hasPermission)
-            {
-                return Unauthorized();
-            }
-
-            return View(arac);
-        }
-
-        // Araç düzenleme işlemi
-        [HttpPost]
-        public IActionResult EditVehicle(ARACLARModels arac)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(arac);
-                    _context.SaveChanges();
-                    return RedirectToAction("Vehicles");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.ARACLAR.Any(a => a.ARACGUID == arac.ARACGUID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-            return View(arac);
-        }
-
 
 
         // Firma Listesi
@@ -787,5 +720,457 @@ namespace VipTransfer.Web.Controllers
                 return RedirectToAction("VehicleDetails", new { id = id });
             }
         }
+
+
+        // Araç Düzenleme Sayfası
+        [HttpGet]
+        public IActionResult EditVehicle(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Vehicles");
+            }
+
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == id);
+            if (arac == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            bool hasPermission = false;
+
+            if (userType == "Firma" && arac.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Firma listesini getir
+            List<FIRMAModels> firmalar;
+            if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                firmalar = _context.FIRMA.Where(f => f.AKTIF == 1).ToList();
+            }
+            else
+            {
+                firmalar = _context.FIRMA.Where(f => f.FIRMAGUID == userGuid).ToList();
+            }
+            ViewBag.Firmalar = firmalar;
+
+            // Araç renkleri
+            ViewBag.Renkler = new List<string> {
+        "Beyaz", "Siyah", "Gri", "Kırmızı", "Mavi", "Yeşil", "Sarı", "Turuncu",
+        "Kahverengi", "Bordo", "Gümüş", "Lacivert", "Diğer"
+    };
+
+            // Araç yakıt tipleri
+            ViewBag.YakitTipleri = new List<string> {
+        "Benzin", "Dizel", "LPG", "Elektrik", "Hibrit", "Benzin+LPG", "Diğer"
+    };
+
+            return View(arac);
+        }
+
+        // Araç Güncelleme
+        [HttpPost]
+        public IActionResult EditVehicle(ARACLARModels arac)
+        {
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Yetki kontrolü
+            var existingArac = _context.ARACLAR.AsNoTracking().FirstOrDefault(a => a.ARACGUID == arac.ARACGUID);
+            if (existingArac == null)
+            {
+                return NotFound();
+            }
+
+            bool hasPermission = false;
+            if (userType == "Firma" && existingArac.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+                // Firma kullanıcısı kendi firma GUID'ini değiştiremez
+                arac.FIRMAGUID = userGuid;
+            }
+            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(arac);
+                    _context.SaveChanges();
+                    TempData["SuccessMessage"] = "Araç bilgileri başarıyla güncellendi.";
+                    return RedirectToAction("VehicleDetails", new { id = arac.ARACGUID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Hata: " + ex.Message);
+                }
+            }
+
+            // Firma listesini tekrar getir
+            List<FIRMAModels> firmalar;
+            if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                firmalar = _context.FIRMA.Where(f => f.AKTIF == 1).ToList();
+            }
+            else
+            {
+                firmalar = _context.FIRMA.Where(f => f.FIRMAGUID == userGuid).ToList();
+            }
+            ViewBag.Firmalar = firmalar;
+
+            // Araç renkleri
+            ViewBag.Renkler = new List<string> {
+        "Beyaz", "Siyah", "Gri", "Kırmızı", "Mavi", "Yeşil", "Sarı", "Turuncu",
+        "Kahverengi", "Bordo", "Gümüş", "Lacivert", "Diğer"
+    };
+
+            // Araç yakıt tipleri
+            ViewBag.YakitTipleri = new List<string> {
+        "Benzin", "Dizel", "LPG", "Elektrik", "Hibrit", "Benzin+LPG", "Diğer"
+    };
+
+            return View(arac);
+        }
+
+        // Fotoğraf Ekleme Sayfası
+        [HttpGet]
+        public IActionResult AddPhotos(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Vehicles");
+            }
+
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == id);
+            if (arac == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            bool hasPermission = false;
+
+            if (userType == "Firma" && arac.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Mevcut fotoğrafları getir
+            var fotograflar = _context.ARACFOTO
+                .Where(f => f.ARACGUID == id)
+                .OrderBy(f => f.SIRANO)
+                .ToList();
+
+            ViewBag.Fotograflar = fotograflar;
+            return View(arac);
+        }
+
+        // Fotoğraf Ekleme İşlemi
+        [HttpPost]
+        public async Task<IActionResult> AddPhotos(string id, List<IFormFile> Fotograflar, int BaslangicSira = 1)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Vehicles");
+            }
+
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == id);
+            if (arac == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            bool hasPermission = false;
+
+            if (userType == "Firma" && arac.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Fotoğraf yükleme
+            if (Fotograflar != null && Fotograflar.Count > 0)
+            {
+                try
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "araclar");
+                    Directory.CreateDirectory(uploadsFolder); // Klasör yoksa oluştur
+
+                    int siraNo = BaslangicSira;
+                    foreach (var foto in Fotograflar)
+                    {
+                        if (foto.Length > 0)
+                        {
+                            // Dosya adını oluştur
+                            string dosyaAdi = $"{arac.ARACGUID}_{DateTime.Now.Ticks}_{siraNo}{Path.GetExtension(foto.FileName)}";
+                            string dosyaYolu = Path.Combine(uploadsFolder, dosyaAdi);
+
+                            // Dosyayı kaydet
+                            using (var stream = new FileStream(dosyaYolu, FileMode.Create))
+                            {
+                                await foto.CopyToAsync(stream);
+                            }
+
+                            // Veritabanına kaydet
+                            var aracFoto = new ARACFOTOModels
+                            {
+                                FOTOGUID = Guid.NewGuid().ToString(),
+                                ARACGUID = arac.ARACGUID,
+                                FOTOYOLU = $"/uploads/araclar/{dosyaAdi}",
+                                SIRANO = siraNo,
+                                EKTARIH = DateTime.Now
+                            };
+
+                            _context.ARACFOTO.Add(aracFoto);
+                            siraNo++;
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Fotoğraflar başarıyla yüklendi.";
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Fotoğraf yükleme sırasında bir hata oluştu: " + ex.Message;
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Lütfen en az bir fotoğraf seçin.";
+            }
+
+            return RedirectToAction("AddPhotos", new { id });
+        }
+
+        // Fotoğraf Silme
+        [HttpPost]
+        public IActionResult DeletePhoto(string id, string aracId)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(aracId))
+            {
+                return RedirectToAction("Vehicles");
+            }
+
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var foto = _context.ARACFOTO.FirstOrDefault(f => f.FOTOGUID == id);
+            if (foto == null)
+            {
+                return NotFound();
+            }
+
+            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == foto.ARACGUID);
+            if (arac == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            bool hasPermission = false;
+
+            if (userType == "Firma" && arac.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                // Dosya sisteminden sil
+                if (!string.IsNullOrEmpty(foto.FOTOYOLU))
+                {
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", foto.FOTOYOLU.TrimStart('/'));
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
+                // Veritabanından sil
+                _context.ARACFOTO.Remove(foto);
+                _context.SaveChanges();
+
+                TempData["SuccessMessage"] = "Fotoğraf başarıyla silindi.";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Fotoğraf silinirken bir hata oluştu: " + ex.Message;
+            }
+
+            return RedirectToAction("AddPhotos", new { id = aracId });
+        }
+
+        // Araç Rezervasyonları Sayfası
+        [HttpGet]
+        public IActionResult VehicleReservations(string id, DateTime? dateFrom = null, DateTime? dateTo = null, string status = null)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Vehicles");
+            }
+
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == id);
+            if (arac == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            bool hasPermission = false;
+
+            if (userType == "Firma" && arac.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (HttpContext.Session.GetInt32("IsAdmin") == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Rezervasyonları getir
+            var query = _context.REZERVASYON.Where(r => r.ARACGUID == id);
+
+            // Filtreler
+            if (dateFrom.HasValue)
+            {
+                query = query.Where(r => r.REZTARIH >= dateFrom.Value.Date);
+            }
+
+            if (dateTo.HasValue)
+            {
+                query = query.Where(r => r.REZTARIH <= dateTo.Value.Date.AddDays(1).AddTicks(-1));
+            }
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                switch (status.ToLower())
+                {
+                    case "active":
+                        query = query.Where(r => r.IPTAL == 0 && (string.IsNullOrEmpty(r.ALTFIRMA) || !r.ALTFIRMA.StartsWith("ONAYLANDI")));
+                        break;
+                    case "approved":
+                        query = query.Where(r => r.IPTAL == 0 && !string.IsNullOrEmpty(r.ALTFIRMA) && r.ALTFIRMA.StartsWith("ONAYLANDI"));
+                        break;
+                    case "canceled":
+                        query = query.Where(r => r.IPTAL == 1);
+                        break;
+                }
+            }
+
+            var rezervasyonlar = query.OrderByDescending(r => r.REZTARIH).ToList();
+
+            // Müşteri bilgilerini getir
+            if (rezervasyonlar.Any())
+            {
+                var musteriIdleri = rezervasyonlar.Select(r => r.MUSTERIGUID).Distinct().ToList();
+                var musteriler = _context.MUSTERI.Where(m => musteriIdleri.Contains(m.MUSTERIGUID)).ToList();
+                ViewBag.Musteriler = musteriler;
+            }
+
+            ViewBag.Arac = arac;
+            return View(rezervasyonlar);
+        }
+
     }
 }
