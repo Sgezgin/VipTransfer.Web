@@ -301,5 +301,168 @@ namespace VipTransfer.Web.Controllers
                 ucret = toplamUcret
             });
         }
+
+        // Rezervasyon düzenleme sayfasını göster
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("List");
+            }
+
+            // Rezervasyon bilgilerini getir
+            var rezervasyon = _context.REZERVASYON.FirstOrDefault(r => r.REZGUID == id);
+            if (rezervasyon == null)
+            {
+                return NotFound();
+            }
+
+            // Kullanıcı yetkisi kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+
+            bool hasPermission = false;
+            if (userType == "Musteri" && rezervasyon.MUSTERIGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (userType == "Firma" && rezervasyon.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (isAdmin.HasValue && isAdmin.Value == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Araç listesini getir
+            var araclar = _context.ARACLAR.ToList();
+            if (rezervasyon.FIRMAGUID != null)
+            {
+                // Firma araçlarını filtrele
+                araclar = araclar.Where(a => a.FIRMAGUID == rezervasyon.FIRMAGUID).ToList();
+            }
+
+            // View model oluştur
+            var model = new RezervasyonViewModel
+            {
+                REZGUID = rezervasyon.REZGUID,
+                Nereden = rezervasyon.NERDEN,
+                Nereye = rezervasyon.NEREYE,
+                RezervasyonTarihi = rezervasyon.REZTARIH,
+                RezervasyonSaati = rezervasyon.REZSAAT,
+                UcusNo = rezervasyon.UCUSNO,
+                SeciliAracGUID = rezervasyon.ARACGUID,
+                AracListesi = araclar
+            };
+
+            return View(model);
+        }
+
+        // Rezervasyon güncelleme işlemi
+        [HttpPost]
+        public IActionResult Edit(RezervasyonViewModel model)
+        {
+            if (string.IsNullOrEmpty(model.REZGUID))
+            {
+                return RedirectToAction("List");
+            }
+
+            // Rezervasyon bilgilerini getir
+            var rezervasyon = _context.REZERVASYON.FirstOrDefault(r => r.REZGUID == model.REZGUID);
+            if (rezervasyon == null)
+            {
+                return NotFound();
+            }
+
+            // Kullanıcı yetkisi kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+
+            bool hasPermission = false;
+            if (userType == "Musteri" && rezervasyon.MUSTERIGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (userType == "Firma" && rezervasyon.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (isAdmin.HasValue && isAdmin.Value == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Yalnızca iptal edilmemiş rezervasyonlar düzenlenebilir
+            if (rezervasyon.IPTAL == 1)
+            {
+                TempData["ErrorMessage"] = "İptal edilmiş rezervasyonlar düzenlenemez.";
+                return RedirectToAction("Details", new { id = rezervasyon.REZGUID });
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Araç değiştirilmiş mi kontrol et
+                    if (model.SeciliAracGUID != rezervasyon.ARACGUID)
+                    {
+                        var yeniArac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == model.SeciliAracGUID);
+                        if (yeniArac != null)
+                        {
+                            rezervasyon.ARACGUID = yeniArac.ARACGUID;
+                            rezervasyon.FIRMAGUID = yeniArac.FIRMAGUID;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("SeciliAracGUID", "Seçilen araç bulunamadı.");
+                            model.AracListesi = _context.ARACLAR.ToList();
+                            return View(model);
+                        }
+                    }
+
+                    // Rezervasyon bilgilerini güncelle
+                    rezervasyon.NERDEN = model.Nereden;
+                    rezervasyon.NEREYE = model.Nereye;
+                    rezervasyon.REZTARIH = model.RezervasyonTarihi;
+                    rezervasyon.REZSAAT = model.RezervasyonSaati;
+                    rezervasyon.UCUSNO = model.UcusNo;
+
+                    _context.Update(rezervasyon);
+                    _context.SaveChanges();
+
+                    TempData["SuccessMessage"] = "Rezervasyon başarıyla güncellendi.";
+                    return RedirectToAction("Details", new { id = rezervasyon.REZGUID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Hata: " + ex.Message);
+                }
+            }
+
+            // Hata durumunda araç listesini tekrar yükle
+            model.AracListesi = _context.ARACLAR.ToList();
+            if (rezervasyon.FIRMAGUID != null)
+            {
+                // Firma araçlarını filtrele
+                model.AracListesi = model.AracListesi.Where(a => a.FIRMAGUID == rezervasyon.FIRMAGUID).ToList();
+            }
+
+            return View(model);
+        }
+
     }
 }

@@ -37,6 +37,17 @@ namespace VipTransfer.Web.Controllers
             ViewBag.AracSayisi = _context.ARACLAR.Count();
             ViewBag.RezervasyonSayisi = _context.REZERVASYON.Count();
 
+            // Bugün ve yarının tarih bilgilerini hazırla
+            DateTime bugun = DateTime.Today;
+            DateTime yarin = bugun.AddDays(1);
+
+            // Bugün ve yarınki rezervasyon sayılarını hesapla
+            ViewBag.BugunRezervasyonSayisi = _context.REZERVASYON
+                .Count(r => r.REZTARIH.Date == bugun);
+
+            ViewBag.YarinRezervasyonSayisi = _context.REZERVASYON
+                .Count(r => r.REZTARIH.Date == yarin);
+
             // Son 10 rezervasyonu getir
             var sonRezervasyonlar = _context.REZERVASYON
                 .OrderByDescending(r => r.KAYITTARIH)
@@ -49,6 +60,47 @@ namespace VipTransfer.Web.Controllers
             ViewBag.Musteriler = musteriler;
 
             return View(sonRezervasyonlar);
+        }
+
+        // Belirli bir güne ait rezervasyonlar
+        public IActionResult DailyReservations(string date)
+        {
+            // Admin kontrolü
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+            if (isAdmin == null || isAdmin.Value != 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Tarih parametresi kontrolü
+            DateTime selectedDate;
+            if (!DateTime.TryParse(date, out selectedDate))
+            {
+                // Geçersiz tarih formatı, bugünün tarihini kullan
+                selectedDate = DateTime.Today;
+            }
+
+            // Seçilen güne ait rezervasyonları getir
+            var rezervasyonlar = _context.REZERVASYON
+                .Where(r => r.REZTARIH.Date == selectedDate.Date)
+                .OrderBy(r => r.REZSAAT)
+                .ToList();
+
+            // Müşteri bilgilerini getir
+            var musteriGuidListesi = rezervasyonlar.Select(r => r.MUSTERIGUID).Distinct().ToList();
+            var musteriler = _context.MUSTERI.Where(m => musteriGuidListesi.Contains(m.MUSTERIGUID)).ToList();
+            ViewBag.Musteriler = musteriler;
+
+            // Araç bilgilerini getir
+            var aracGuidListesi = rezervasyonlar.Select(r => r.ARACGUID).Distinct().ToList();
+            var araclar = _context.ARACLAR.Where(a => aracGuidListesi.Contains(a.ARACGUID)).ToList();
+            ViewBag.Araclar = araclar;
+
+            // Seçilen tarihi ve formatlanmış görüntüsünü ViewBag'e ekle
+            ViewBag.SelectedDate = selectedDate;
+            ViewBag.FormattedDate = selectedDate.ToString("dd MMMM yyyy, dddd");
+
+            return View(rezervasyonlar);
         }
 
         // Firma rezervasyonları

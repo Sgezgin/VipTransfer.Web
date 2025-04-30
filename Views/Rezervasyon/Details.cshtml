@@ -13,10 +13,11 @@
             <i class="fas fa-arrow-left mr-2"></i> Rezervasyonlara Dön
         </a>
     </div>
-    
+
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
         <!-- Durum Bilgisi -->
-        <div class="p-4 @(Model.IPTAL == 1 ? "bg-red-600" : (Model.ALTFIRMA != null && Model.ALTFIRMA.StartsWith("ONAYLANDI") ? "bg-green-600" : "bg-blue-700")) text-white">
+        <div
+            class="p-4 @(Model.IPTAL == 1 ? "bg-red-600" : (Model.ALTFIRMA != null && Model.ALTFIRMA.StartsWith("ONAYLANDI") ? "bg-green-600" : "bg-blue-700")) text-white">
             <div class="flex items-center">
                 @if (Model.IPTAL == 1)
                 {
@@ -36,12 +37,12 @@
                 }
             </div>
         </div>
-        
+
         <div class="p-6">
             <!-- Rezervasyon Bilgileri -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Rezervasyon Bilgileri</h2>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <p class="text-sm text-gray-500">Rezervasyon No</p>
@@ -84,11 +85,11 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Araç Bilgileri -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Araç Bilgileri</h2>
-                
+
                 @if (arac != null)
                 {
                     <div class="flex items-center bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -121,16 +122,16 @@
                     <p class="text-gray-500">Araç bilgisi bulunamadı.</p>
                 }
             </div>
-            
+
             <!-- Firma Bilgileri -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Firma Bilgileri</h2>
-                
+
                 @if (firma != null)
                 {
                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
                         <h3 class="font-semibold mb-2">@firma.FIRMAADI</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             @if (!string.IsNullOrEmpty(firma.TELEFON1))
                             {
@@ -154,16 +155,16 @@
                     <p class="text-gray-500">Firma bilgisi bulunamadı.</p>
                 }
             </div>
-            
+
             <!-- Müşteri Bilgileri -->
             @if (musteri != null)
             {
                 <div class="mb-8">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4">Müşteri Bilgileri</h2>
-                    
+
                     <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
                         <h3 class="font-semibold mb-2">@musteri.MADISOYADI</h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             @if (!string.IsNullOrEmpty(musteri.TELEFON1))
                             {
@@ -190,21 +191,32 @@
                     </div>
                 </div>
             }
-            
+
             <!-- İşlem Butonları -->
             <div class="flex flex-col md:flex-row gap-4">
                 @if (Model.IPTAL == 0)
                 {
-                    <form asp-action="Cancel" asp-route-id="@Model.REZGUID" method="post" onsubmit="return confirm('Bu rezervasyonu iptal etmek istediğinize emin misiniz?');" class="w-full md:w-auto">
-                        <button type="submit" class="w-full md:w-auto bg-red-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-red-700 transition">
+                    <a href="/Rezervasyon/Edit/@Model.REZGUID"
+                        class="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-blue-700 transition text-center">
+                        <i class="fas fa-edit mr-2"></i> Rezervasyonu Düzenle
+                    </a>
+
+                    <form asp-action="Cancel" asp-route-id="@Model.REZGUID" method="post"
+                        onsubmit="return confirm('Bu rezervasyonu iptal etmek istediğinize emin misiniz?');"
+                        class="w-full md:w-auto">
+                        <button type="submit"
+                            class="w-full md:w-auto bg-red-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-red-700 transition">
                             <i class="fas fa-times-circle mr-2"></i> Rezervasyonu İptal Et
                         </button>
                     </form>
-                    
-                    @if (Context.Session.GetString("UserType") == "Firma" && (Model.ALTFIRMA == null || !Model.ALTFIRMA.StartsWith("ONAYLANDI")))
+
+                    @if (Context.Session.GetString("UserType") == "Firma" && (Model.ALTFIRMA == null ||
+                                    !Model.ALTFIRMA.StartsWith("ONAYLANDI")))
                     {
-                        <form asp-controller="Firma" asp-action="ApproveReservation" asp-route-id="@Model.REZGUID" method="post" class="w-full md:w-auto">
-                            <button type="submit" class="w-full md:w-auto bg-green-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-green-700 transition">
+                        <form asp-controller="Firma" asp-action="ApproveReservation" asp-route-id="@Model.REZGUID" method="post"
+                            class="w-full md:w-auto">
+                            <button type="submit"
+                                class="w-full md:w-auto bg-green-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-green-700 transition">
                                 <i class="fas fa-check-circle mr-2"></i> Rezervasyonu Onayla
                             </button>
                         </form>
@@ -213,4 +225,6 @@
             </div>
         </div>
     </div>
+
+
 </div>

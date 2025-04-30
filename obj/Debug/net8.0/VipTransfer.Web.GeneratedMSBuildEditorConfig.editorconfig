@@ -38,6 +38,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcQXJhY0xpc3Rlc2kuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/project2/VipTransfer.Web/Views/Firma/DailyReservations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRGFpbHlSZXNlcnZhdGlvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/project2/VipTransfer.Web/Views/Firma/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmlybWFcRGFzaGJvYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -108,6 +112,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/project2/VipTransfer.Web/Views/Rezervasyon/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV6ZXJ2YXN5b25cRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/project2/VipTransfer.Web/Views/Rezervasyon/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmV6ZXJ2YXN5b25cRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/project2/VipTransfer.Web/Views/Rezervasyon/List.cshtml]
