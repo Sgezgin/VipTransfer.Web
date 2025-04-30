@@ -5,120 +5,203 @@
 
 <div class="max-w-4xl mx-auto">
     <h1 class="text-3xl font-bold text-gray-800 mb-6">@ViewData["Title"]</h1>
-    
+
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="bg-blue-700 p-6 text-white">
+        <div class="bg-gradient-to-r from-blue-700 to-purple-700 p-6 text-white">
             <h2 class="text-xl font-semibold">Transfer Bilgileri</h2>
             <p class="mt-2 text-blue-100">Lütfen transfer detaylarını girin</p>
         </div>
-        
+
         <div class="p-6">
             <form asp-action="Create" method="post" id="rezervasyonForm">
                 <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-                
+
                 <!-- Transfer Bilgileri -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div>
-                        <label asp-for="Nereden" class="block text-gray-700 text-sm font-medium mb-2">Nereden</label>
-                        <input asp-for="Nereden" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Başlangıç noktası">
-                        <span asp-validation-for="Nereden" class="text-sm text-red-600"></span>
+                <div class="space-y-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="relative">
+                            <label asp-for="Nereden" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-map-marker-alt text-blue-600 mr-1"></i> Nereden
+                            </label>
+                            <input asp-for="Nereden" id="nereden"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm transition"
+                                placeholder="Başlangıç noktası">
+                            <div id="nereden-results"
+                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden">
+                            </div>
+                            <span asp-validation-for="Nereden" class="text-sm text-red-600"></span>
+                        </div>
+
+                        <div class="relative">
+                            <label asp-for="Nereye" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-flag-checkered text-blue-600 mr-1"></i> Nereye
+                            </label>
+                            <input asp-for="Nereye" id="nereye"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm transition"
+                                placeholder="Varış noktası">
+                            <div id="nereye-results"
+                                class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden">
+                            </div>
+                            <span asp-validation-for="Nereye" class="text-sm text-red-600"></span>
+                        </div>
                     </div>
-                    
-                    <div>
-                        <label asp-for="Nereye" class="block text-gray-700 text-sm font-medium mb-2">Nereye</label>
-                        <input asp-for="Nereye" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Varış noktası">
-                        <span asp-validation-for="Nereye" class="text-sm text-red-600"></span>
+
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label asp-for="RezervasyonTarihi" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-calendar-alt text-blue-600 mr-1"></i> Tarih
+                            </label>
+                            <input asp-for="RezervasyonTarihi" type="date"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            <span asp-validation-for="RezervasyonTarihi" class="text-sm text-red-600"></span>
+                        </div>
+
+                        <div>
+                            <label asp-for="RezervasyonSaati" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-clock text-blue-600 mr-1"></i> Saat
+                            </label>
+                            <input asp-for="RezervasyonSaati" type="time"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                            <span asp-validation-for="RezervasyonSaati" class="text-sm text-red-600"></span>
+                        </div>
                     </div>
-                    
+
                     <div>
-                        <label asp-for="RezervasyonTarihi" class="block text-gray-700 text-sm font-medium mb-2">Tarih</label>
-                        <input asp-for="RezervasyonTarihi" type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" min="@DateTime.Now.ToString("yyyy-MM-dd")">
-                        <span asp-validation-for="RezervasyonTarihi" class="text-sm text-red-600"></span>
-                    </div>
-                    
-                    <div>
-                        <label asp-for="RezervasyonSaati" class="block text-gray-700 text-sm font-medium mb-2">Saat</label>
-                        <input asp-for="RezervasyonSaati" type="time" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                        <span asp-validation-for="RezervasyonSaati" class="text-sm text-red-600"></span>
-                    </div>
-                    
-                    <div>
-                        <label asp-for="UcusNo" class="block text-gray-700 text-sm font-medium mb-2">Uçuş Numarası (Opsiyonel)</label>
-                        <input asp-for="UcusNo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Uçuş numarası">
+                        <label asp-for="UcusNo" class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-plane text-blue-600 mr-1"></i> Uçuş Numarası (Opsiyonel)
+                        </label>
+                        <input asp-for="UcusNo"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                            placeholder="Örn: TK1234">
                         <span asp-validation-for="UcusNo" class="text-sm text-red-600"></span>
                     </div>
                 </div>
-                
+
                 <!-- Araç Seçimi -->
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Araç Seçimi</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                    @if (Model.AracListesi != null && Model.AracListesi.Any())
-                    {
-                        @foreach (var arac in Model.AracListesi)
-                        {
-                            <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-blue-500 transition" 
-                                 onclick="selectVehicle('@arac.ARACGUID', this)">
-                                <input type="radio" name="SeciliAracGUID" value="@arac.ARACGUID" class="hidden vehicle-radio">
-                                <div class="flex flex-col items-center">
-                                    <div class="bg-blue-100 rounded-full p-4 mb-3">
-                                        @if (arac.TIP == 1)
-                                        {
-                                            <i class="fas fa-car text-3xl text-blue-700"></i>
-                                        }
-                                        else if (arac.TIP == 2)
-                                        {
-                                            <i class="fas fa-car-side text-3xl text-blue-700"></i>
-                                        }
-                                        else if (arac.TIP == 3)
-                                        {
-                                            <i class="fas fa-shuttle-van text-3xl text-blue-700"></i>
-                                        }
-                                        else
-                                        {
-                                            <i class="fas fa-bus text-3xl text-blue-700"></i>
-                                        }
-                                    </div>
-                                    <h4 class="font-semibold text-center">@arac.MARKA @arac.MODEL</h4>
-                                    <p class="text-sm text-gray-500 text-center">@arac.PLAKA</p>
-                                </div>
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        <p class="col-span-4 text-center text-gray-500 py-4">Araç bulunamadı.</p>
-                    }
-                </div>
-                
-                <span id="aracSecimHata" class="text-sm text-red-600 mb-4 hidden">Lütfen bir araç seçin</span>
-                
-                <!-- Ücret Bilgisi -->
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Ücret Bilgisi</h3>
-                    
-                    <div class="flex flex-col gap-2 mb-4">
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Tahmini Mesafe:</span>
-                            <span id="tahminiMesafe" class="font-semibold">0 km</span>
-                            <input asp-for="TahminiKm" type="hidden" value="0">
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">Transfer Ücreti:</span>
-                            <span id="transferUcreti" class="font-semibold">0 ₺</span>
-                            <input asp-for="Ucret" type="hidden" value="0">
-                        </div>
-                    </div>
-                    
-                    <button type="button" id="hesaplaBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">
-                        Ücreti Hesapla
-                    </button>
-                </div>
-                
-                <!-- Onay Butonu -->
                 <div>
-                    <button type="submit" id="submitBtn" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
-                        Rezervasyonu Oluştur
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-car text-blue-600 mr-2"></i> Araç Seçimi
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                        @if (Model.AracListesi != null && Model.AracListesi.Any())
+                        {
+                            @foreach (var arac in Model.AracListesi)
+                            {
+                                <div class="vehicle-card border border-gray-200 rounded-xl p-4 cursor-pointer hover:border-blue-500 hover:shadow-md transition relative overflow-hidden"
+                                    data-arac-guid="@arac.ARACGUID" onclick="selectVehicle('@arac.ARACGUID', this)">
+                                    <input type="radio" name="SeciliAracGUID" value="@arac.ARACGUID"
+                                        class="hidden vehicle-radio">
+
+                                    <!-- Araç Tip Badge -->
+                                    @{
+                                        string badgeClass = "";
+                                        string badgeText = "";
+
+                                        switch (arac.TIP)
+                                        {
+                                            case 1:
+                                                badgeClass = "bg-blue-100 text-blue-800";
+                                                badgeText = "Ekonomik";
+                                                break;
+                                            case 2:
+                                                badgeClass = "bg-green-100 text-green-800";
+                                                badgeText = "VIP";
+                                                break;
+                                            case 3:
+                                                badgeClass = "bg-purple-100 text-purple-800";
+                                                badgeText = "Lüks";
+                                                break;
+                                            default:
+                                                badgeClass = "bg-gray-100 text-gray-800";
+                                                badgeText = "Diğer";
+                                                break;
+                                        }
+                                    }
+
+                                    <div class="absolute top-2 right-2">
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full @badgeClass">
+                                            @badgeText
+                                        </span>
+                                    </div>
+
+                                    <div class="flex flex-col items-center">
+                                        <div class="bg-blue-50 rounded-full p-4 mb-3">
+                                            @if (arac.TIP == 1)
+                                            {
+                                                <i class="fas fa-car text-3xl text-blue-600"></i>
+                                            }
+                                            else if (arac.TIP == 2)
+                                            {
+                                                <i class="fas fa-car-side text-3xl text-green-600"></i>
+                                            }
+                                            else if (arac.TIP == 3)
+                                            {
+                                                <i class="fas fa-shuttle-van text-3xl text-purple-600"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-bus text-3xl text-gray-600"></i>
+                                            }
+                                        </div>
+                                        <h4 class="font-semibold text-center">@arac.MARKA @arac.MODEL</h4>
+                                        <p class="text-sm text-gray-600 text-center">@arac.PLAKA</p>
+
+                                        <!-- Araç Özellikleri İkonları -->
+                                        <div class="flex justify-center gap-3 mt-3">
+                                            @if (arac.KOLTUKSAYISI.HasValue)
+                                            {
+                                                <div class="flex items-center text-gray-600" title="Koltuk Sayısı">
+                                                    <i class="fas fa-users text-xs mr-1"></i>
+                                                    <span class="text-xs">@arac.KOLTUKSAYISI</span>
+                                                </div>
+                                            }
+
+                                            @if (arac.BAGAJKAPASITESI.HasValue)
+                                            {
+                                                <div class="flex items-center text-gray-600" title="Bagaj Kapasitesi">
+                                                    <i class="fas fa-suitcase text-xs mr-1"></i>
+                                                    <span class="text-xs">@arac.BAGAJKAPASITESI</span>
+                                                </div>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(arac.YAKITTURU))
+                                            {
+                                                <div class="flex items-center text-gray-600" title="Yakıt Türü">
+                                                    <i class="fas fa-gas-pump text-xs mr-1"></i>
+                                                    <span class="text-xs">@(arac.YAKITTURU.Length > 1 ? arac.YAKITTURU.Substring(0,
+                                                                                                    1) : arac.YAKITTURU)</span>
+                                    </div>
+                                                                        }
+                                        </div>
+
+                                        <!-- Seçildi İşareti -->
+                                        <div
+                                            class="vehicle-selected-indicator absolute inset-0 bg-blue-500 bg-opacity-10 items-center justify-center hidden">
+                                            <div class="bg-blue-600 text-white rounded-full p-2">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="col-span-3 text-center text-gray-500 py-4 border border-gray-200 rounded-lg">Araç
+                                bulunamadı.</p>
+                        }
+                    </div>
+                </div>
+
+                <div id="aracSecimHata" class="text-sm text-red-600 mb-4 hidden">Lütfen bir araç seçin</div>
+
+                <div class="animate-pulse" id="submit-container">
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-gradient-to-r from-blue-700 to-purple-700 text-white text-center py-4 rounded-xl font-semibold hover:from-blue-800 hover:to-purple-800 transition shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-check-circle mr-2"></i> Rezervasyonu Oluştur
                     </button>
                 </div>
             </form>
@@ -126,88 +209,139 @@
     </div>
 </div>
 
+@section Styles {
+    <style>
+        .vehicle-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .vehicle-card.selected .vehicle-selected-indicator {
+            display: flex;
+        }
+
+        .pac-container {
+            z-index: 1050;
+            border-radius: 0.5rem;
+            margin-top: 4px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .pac-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .pac-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .pac-item-selected {
+            background-color: #eff6ff;
+        }
+    </style>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    
+
     <script>
+
         // Araç seçimi
         function selectVehicle(aracGuid, element) {
             // Tüm seçimleri kaldır
+            document.querySelectorAll('.vehicle-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Radyo butonlarını temizle
             document.querySelectorAll('.vehicle-radio').forEach(radio => {
                 radio.checked = false;
-                radio.closest('div').classList.remove('border-blue-500', 'bg-blue-50');
-                radio.closest('div').classList.add('border-gray-200');
             });
-            
+
             // Seçilen aracı işaretle
+            element.classList.add('selected');
             element.querySelector('.vehicle-radio').checked = true;
-            element.classList.remove('border-gray-200');
-            element.classList.add('border-blue-500', 'bg-blue-50');
-            
+
             // Araç seçim hatasını gizle
             document.getElementById('aracSecimHata').classList.add('hidden');
+
         }
-        
-        // Ücret hesaplama
-        document.getElementById('hesaplaBtn').addEventListener('click', function() {
-            const nereden = document.getElementById('Nereden').value;
-            const nereye = document.getElementById('Nereye').value;
-            const seciliArac = document.querySelector('.vehicle-radio:checked');
-            
-            if (!nereden || !nereye) {
-                alert('Lütfen nereden ve nereye bilgilerini girin.');
-                return;
-            }
-            
-            if (!seciliArac) {
-                document.getElementById('aracSecimHata').classList.remove('hidden');
-                return;
-            }
-            
-            const aracGuid = seciliArac.value;
-            
-            // AJAX isteği ile fiyat hesapla
-            fetch('/Rezervasyon/CalculatePrice', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `nereden=${encodeURIComponent(nereden)}&nereye=${encodeURIComponent(nereye)}&aracGuid=${encodeURIComponent(aracGuid)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('tahminiMesafe').textContent = data.mesafe + ' km';
-                    document.getElementById('transferUcreti').textContent = data.ucret + ' ₺';
-                    document.getElementById('TahminiKm').value = data.mesafe;
-                    document.getElementById('Ucret').value = data.ucret;
-                } else {
-                    alert(data.message || 'Ücret hesaplanamadı, lütfen tekrar deneyin.');
-                }
-            })
-            .catch(error => {
-                console.error('Hata:', error);
-                alert('Ücret hesaplanırken bir hata oluştu, lütfen tekrar deneyin.');
-            });
-        });
-        
+
+
         // Form gönderme kontrolü
-        document.getElementById('rezervasyonForm').addEventListener('submit', function(event) {
+        document.getElementById('rezervasyonForm').addEventListener('submit', function (event) {
             const seciliArac = document.querySelector('.vehicle-radio:checked');
-            
+
             if (!seciliArac) {
                 event.preventDefault();
                 document.getElementById('aracSecimHata').classList.remove('hidden');
+                document.getElementById('aracSecimHata').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return false;
             }
-            
+
             if (document.getElementById('Ucret').value <= 0) {
                 event.preventDefault();
-                alert('Lütfen önce ücreti hesaplayın.');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Eksik Bilgi',
+                    text: 'Lütfen önce ücreti hesaplayın.',
+                    confirmButtonText: 'Tamam',
+                    confirmButtonColor: '#3b82f6'
+                });
                 return false;
             }
-            
+
             return true;
         });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Submit butonu başlangıçta devre dışı
+            document.getElementById('submitBtn').disabled = true;
+        });
     </script>
+
+
+    <script>
+        function isFormValid() {
+            const nereden = document.getElementById('nereden').value.trim();
+            const nereye = document.getElementById('nereye').value.trim();
+            const tarih = document.querySelector('[name="RezervasyonTarihi"]').value;
+            const saat = document.querySelector('[name="RezervasyonSaati"]').value;
+            const selectedVehicle = document.querySelector('.vehicle-radio:checked');
+
+            return nereden && nereye && tarih && saat && selectedVehicle;
+        }
+
+        function toggleSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = !isFormValid();
+        }
+
+        document.querySelectorAll('#rezervasyonForm input').forEach(el => {
+            el.addEventListener('input', toggleSubmitButton);
+            el.addEventListener('change', toggleSubmitButton);
+        });
+
+        // Araç seçimi için de aynı kontrol
+        function selectVehicle(guid, element) {
+            document.querySelectorAll('.vehicle-card').forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.vehicle-radio').checked = false;
+                card.querySelector('.vehicle-selected-indicator').classList.add('hidden');
+            });
+
+            element.classList.add('selected');
+            element.querySelector('.vehicle-radio').checked = true;
+            element.querySelector('.vehicle-selected-indicator').classList.remove('hidden');
+
+            toggleSubmitButton(); // araç seçilince tekrar kontrol et
+        }
+
+        window.selectVehicle = selectVehicle; // onclick için dışa aktar
+    </script>
+    <!-- SweetAlert2 for better alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }

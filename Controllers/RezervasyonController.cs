@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VipTransfer.Web.Data;
 using VipTransfer.Web.Models;
@@ -14,7 +15,7 @@ namespace VipTransfer.Web.Controllers
 
     public class RezervasyonController : Controller
     {
-       
+
         private readonly ApplicationDbContext _context;
 
         public RezervasyonController(ApplicationDbContext context)
@@ -92,6 +93,8 @@ namespace VipTransfer.Web.Controllers
         [HttpPost]
         public IActionResult Create(RezervasyonViewModel model)
         {
+            ModelState.Remove("REZGUID");
+
             if (ModelState.IsValid)
             {
                 // Oturum kontrolü
@@ -105,7 +108,7 @@ namespace VipTransfer.Web.Controllers
                 }
 
                 // Seçilen araç bilgilerini getir
-                var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == model.SeciliAracGUID);
+                var arac = _context.ARACLAR.AsNoTracking().FirstOrDefault(a => a.ARACGUID == model.SeciliAracGUID);
                 if (arac == null)
                 {
                     ModelState.AddModelError("SeciliAracGUID", "Lütfen bir araç seçiniz");
@@ -120,7 +123,7 @@ namespace VipTransfer.Web.Controllers
                 var rezervasyon = new REZERVASYONModels
                 {
                     REZGUID = Guid.NewGuid().ToString(),
-                    ARACGUID = model.SeciliAracGUID,
+                    ARACGUID = arac.ARACGUID,
                     FIRMAGUID = firmaGuid,
                     MUSTERIGUID = userType == "Musteri" ? userGuid : null,
                     NERDEN = model.Nereden,
@@ -128,8 +131,8 @@ namespace VipTransfer.Web.Controllers
                     REZTARIH = model.RezervasyonTarihi,
                     REZSAAT = model.RezervasyonSaati,
                     UCUSNO = model.UcusNo,
-                    TAHMINIKM = model.TahminiKm,
-                    UCRET = model.Ucret,
+                    TAHMINIKM = 0,
+                    UCRET = 0,
                     IPTAL = 0,
                     KAYITKULL = username,
                     KAYITTARIH = DateTime.Now
@@ -205,7 +208,7 @@ namespace VipTransfer.Web.Controllers
 
             // Kullanıcı türüne göre iptal yetkisi kontrol et
             bool canCancel = false;
-            
+
             if (userType == "Musteri" && rezervasyon.MUSTERIGUID == userGuid)
             {
                 canCancel = true;
@@ -257,7 +260,7 @@ namespace VipTransfer.Web.Controllers
 
             // Basit bir fiyat hesaplama algoritması (gerçek uygulama daha karmaşık olabilir)
             double mesafe = 0;
-            
+
             // Burada gerçek bir mesafe API'si kullanılabilir
             // Şimdilik basit bir tahmin yapalım
             if (nereden.Contains("Havalimanı") || nereye.Contains("Havalimanı"))
@@ -291,11 +294,11 @@ namespace VipTransfer.Web.Controllers
 
             double toplamUcret = mesafe * kmBasinaUcret;
 
-            return Json(new 
-            { 
-                success = true, 
-                mesafe = mesafe, 
-                ucret = toplamUcret 
+            return Json(new
+            {
+                success = true,
+                mesafe = mesafe,
+                ucret = toplamUcret
             });
         }
     }

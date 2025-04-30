@@ -249,6 +249,14 @@
       "PackagePath": "staticwebassets\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG"
     },
     {
+      "Id": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG",
+      "PackagePath": "staticwebassets\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG"
+    },
+    {
+      "Id": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG",
+      "PackagePath": "staticwebassets\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.VipTransfer.Web.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

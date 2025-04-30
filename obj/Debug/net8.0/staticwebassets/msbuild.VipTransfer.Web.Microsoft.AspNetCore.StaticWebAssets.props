@@ -976,6 +976,38 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\araclar\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\araclar\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG))">
+      <SourceType>Package</SourceType>
+      <SourceId>VipTransfer.Web</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/VipTransfer.Web</BasePath>
+      <RelativePath>uploads/araclar/5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\araclar\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\araclar\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG))">
+      <SourceType>Package</SourceType>
+      <SourceId>VipTransfer.Web</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/VipTransfer.Web</BasePath>
+      <RelativePath>uploads/araclar/5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\araclar\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\VipTransfer.Web.bundle.scp.css))">
       <SourceType>Package</SourceType>
       <SourceId>VipTransfer.Web</SourceId>

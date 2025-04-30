@@ -8,7 +8,7 @@ namespace VipTransfer.Web.Models.ViewModels
 {
     public class RezervasyonViewModel
     {
-        public string REZGUID { get; set; }
+        public string? REZGUID { get; set; }
 
         [Required(ErrorMessage = "Nereden bilgisi gereklidir")]
         public string Nereden { get; set; }
@@ -23,17 +23,12 @@ namespace VipTransfer.Web.Models.ViewModels
         [Required(ErrorMessage = "Saat seçimi gereklidir")]
         public string RezervasyonSaati { get; set; }
 
-        public string UcusNo { get; set; }
-
-        public double TahminiKm { get; set; }
-        public double Ucret { get; set; }
+        public string? UcusNo { get; set; }
 
         // Araç seçimi için
-        public string SeciliAracGUID { get; set; }
-        public List<ARACLARModels> AracListesi { get; set; }
+        public string? SeciliAracGUID { get; set; }
+        public List<ARACLARModels>? AracListesi { get; set; }
 
-        // Firma seçimi için (admin kullanıcısı için)
-        public string SeciliFirmaGUID { get; set; }
-        public List<FIRMAModels> FirmaListesi { get; set; }
+
     }
 }

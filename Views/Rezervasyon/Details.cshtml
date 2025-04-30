@@ -22,7 +22,7 @@
                 {
                     <i class="fas fa-times-circle text-xl mr-2"></i>
                     <span class="font-semibold">İptal Edildi</span>
-                    <span class="ml-auto">İptal Tarihi: @Model.IPTALTARIH.ToString("dd.MM.yyyy HH:mm")</span>
+                    <span class="ml-auto">İptal Tarihi: @Model.IPTALTARIH?.ToString("dd.MM.yyyy HH:mm")</span>
                 }
                 else if (Model.ALTFIRMA != null && Model.ALTFIRMA.StartsWith("ONAYLANDI"))
                 {
