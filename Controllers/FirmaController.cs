@@ -21,6 +21,51 @@ namespace VipTransfer.Web.Controllers
             _context = context;
         }
 
+
+        public IActionResult DashboardMain()
+        {
+            // Admin kontrolü
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+            if (isAdmin == null || isAdmin.Value != 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            // İstatistikleri hazırla
+            ViewBag.FirmaSayisi = _context.FIRMA.Count();
+            ViewBag.MusteriSayisi = _context.MUSTERI.Count();
+            ViewBag.AracSayisi = _context.ARACLAR.Count();
+            ViewBag.RezervasyonSayisi = _context.REZERVASYON.Count();
+
+            // Onaylanan, bekleyen ve iptal rezervasyon sayıları
+            ViewBag.OnaylananSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 0 && !string.IsNullOrEmpty(r.ALTFIRMA) && r.ALTFIRMA.StartsWith("ONAYLANDI"));
+            ViewBag.BekleyenSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 0 && (string.IsNullOrEmpty(r.ALTFIRMA) || !r.ALTFIRMA.StartsWith("ONAYLANDI")));
+            ViewBag.IptalSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 1);
+
+            // Bugün ve yarınki rezervasyon sayıları
+            DateTime bugun = DateTime.Today;
+            DateTime yarin = bugun.AddDays(1);
+            ViewBag.BugunRezervasyonSayisi = _context.REZERVASYON.Count(r => r.REZTARIH.Date == bugun);
+            ViewBag.YarinRezervasyonSayisi = _context.REZERVASYON.Count(r => r.REZTARIH.Date == yarin);
+
+            // Son rezervasyonları getir
+            var sonRezervasyonlar = _context.REZERVASYON
+                .OrderByDescending(r => r.KAYITTARIH)
+                .Take(20)  // Daha fazla rezervasyon göster
+                .ToList();
+
+            // Müşteri bilgilerini getir
+            var musteriGuidListesi = sonRezervasyonlar.Select(r => r.MUSTERIGUID).Distinct().ToList();
+            var musteriler = _context.MUSTERI.Where(m => musteriGuidListesi.Contains(m.MUSTERIGUID)).ToList();
+            ViewBag.Musteriler = musteriler;
+
+            // Araç bilgilerini getir
+            var aracGuidListesi = sonRezervasyonlar.Select(r => r.ARACGUID).Distinct().ToList();
+            var araclar = _context.ARACLAR.Where(a => aracGuidListesi.Contains(a.ARACGUID)).ToList();
+            ViewBag.Araclar = araclar;
+
+            return View(sonRezervasyonlar);
+        }
         // Firma dashboard
         public IActionResult Dashboard()
         {

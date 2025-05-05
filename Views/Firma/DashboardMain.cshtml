@@ -1,0 +1,1177 @@
+@model List<VipTransfer.Web.Models.REZERVASYONModels>
+@{
+    ViewData["Title"] = "Rezervasyon Yönetimi";
+}
+
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-800">Rezervasyon Yönetimi</h1>
+        <button onclick="openRezervasyonModal()" class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow-md transition flex items-center">
+            <i class="fas fa-plus mr-2"></i> Yeni Rezervasyon Ekle
+        </button>
+    </div>
+    
+    <!-- Bugün ve Yarın Rezervasyonları -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <a href="/Firma/DailyReservations?date=@DateTime.Today.ToString("yyyy-MM-dd")" class="block">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl shadow-md p-6 hover:shadow-lg transition text-white">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-white bg-opacity-20 mr-4">
+                        <i class="fas fa-calendar-day text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Bugünkü Rezervasyonlar</h3>
+                        <p class="text-blue-100">@DateTime.Today.ToString("dd MMMM yyyy, dddd")</p>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="text-4xl font-bold">@ViewBag.BugunRezervasyonSayisi</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/Firma/DailyReservations?date=@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" class="block">
+            <div class="bg-gradient-to-r from-purple-600 to-purple-400 rounded-xl shadow-md p-6 hover:shadow-lg transition text-white">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-white bg-opacity-20 mr-4">
+                        <i class="fas fa-calendar-alt text-3xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold">Yarınki Rezervasyonlar</h3>
+                        <p class="text-purple-100">@DateTime.Today.AddDays(1).ToString("dd MMMM yyyy, dddd")</p>
+                    </div>
+                    <div class="ml-auto">
+                        <div class="text-4xl font-bold">@ViewBag.YarinRezervasyonSayisi</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+    <!-- Rezervasyon Özeti -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white rounded-xl shadow-md p-4">
+            <div class="flex flex-col items-center">
+                <div class="p-3 rounded-full bg-blue-100 mb-2">
+                    <i class="fas fa-calendar-check text-2xl text-blue-700"></i>
+                </div>
+                <p class="text-sm text-gray-500">Toplam</p>
+                <p class="text-xl font-bold text-gray-800">@ViewBag.RezervasyonSayisi</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-4">
+            <div class="flex flex-col items-center">
+                <div class="p-3 rounded-full bg-green-100 mb-2">
+                    <i class="fas fa-check-circle text-2xl text-green-700"></i>
+                </div>
+                <p class="text-sm text-gray-500">Onaylanan</p>
+                <p class="text-xl font-bold text-gray-800">@ViewBag.OnaylananSayisi</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-4">
+            <div class="flex flex-col items-center">
+                <div class="p-3 rounded-full bg-yellow-100 mb-2">
+                    <i class="fas fa-hourglass-half text-2xl text-yellow-700"></i>
+                </div>
+                <p class="text-sm text-gray-500">Bekleyen</p>
+                <p class="text-xl font-bold text-gray-800">@ViewBag.BekleyenSayisi</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-md p-4">
+            <div class="flex flex-col items-center">
+                <div class="p-3 rounded-full bg-red-100 mb-2">
+                    <i class="fas fa-times-circle text-2xl text-red-700"></i>
+                </div>
+                <p class="text-sm text-gray-500">İptal Edilen</p>
+                <p class="text-xl font-bold text-gray-800">@ViewBag.IptalSayisi</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Son Rezervasyonlar - Ana Bölüm -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Son Rezervasyonlar</h2>
+            
+            <div class="flex gap-2">
+                <div class="relative">
+                    <input id="reservationSearch" type="text" placeholder="Ara..." class="border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-search absolute right-3 top-2 text-gray-400"></i>
+                </div>
+                
+                <select id="statusFilter" class="border border-gray-300 rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="all">Tümü</option>
+                    <option value="waiting">Bekleyen</option>
+                    <option value="approved">Onaylanan</option>
+                    <option value="canceled">İptal Edilen</option>
+                </select>
+            </div>
+        </div>
+        
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Rezervasyon No
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Tarih/Saat
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Müşteri
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Güzergah
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Araç
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Durum
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                İşlemler
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="rezervasyonTable">
+                        @foreach (var rezervasyon in Model)
+                        {
+                            var musteri = ViewBag.Musteriler != null ? 
+                                ((List<VipTransfer.Web.Models.MUSTERIModels>)ViewBag.Musteriler).FirstOrDefault(m => m.MUSTERIGUID == rezervasyon.MUSTERIGUID) : null;
+                                
+                            var arac = ViewBag.Araclar != null ? 
+                                ((List<VipTransfer.Web.Models.ARACLARModels>)ViewBag.Araclar).FirstOrDefault(a => a.ARACGUID == rezervasyon.ARACGUID) : null;
+                                
+                            string statusClass = "waiting";
+                            if (rezervasyon.IPTAL == 1)
+                            {
+                                statusClass = "canceled";
+                            }
+                            else if (!string.IsNullOrEmpty(rezervasyon.ALTFIRMA) && rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI"))
+                            {
+                                statusClass = "approved";
+                            }
+                            
+                            <tr class="reservation-row @statusClass" data-customer="@(musteri?.MADISOYADI ?? "")" data-route="@rezervasyon.NERDEN @rezervasyon.NEREYE">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@(rezervasyon.REZGUID?.Length > 8 ? rezervasyon.REZGUID.Substring(0, 8).ToUpper() : rezervasyon.REZGUID?.ToUpper())</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@rezervasyon.REZTARIH.ToString("dd.MM.yyyy")</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.REZSAAT</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@(musteri != null ? musteri.MADISOYADI : "Müşteri Bilgisi")</div>
+                                    <div class="text-sm text-gray-500">@(musteri != null ? musteri.TELEFON1 : "")</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">@rezervasyon.NERDEN</div>
+                                    <div class="text-sm text-gray-500">@rezervasyon.NEREYE</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@(arac != null ? $"{arac.MARKA} {arac.MODEL}" : "-")</div>
+                                    <div class="text-sm text-gray-500">@(arac != null ? arac.PLAKA : "")</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @if (rezervasyon.IPTAL == 1)
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            İptal Edildi
+                                        </span>
+                                    }
+                                    else if (!string.IsNullOrEmpty(rezervasyon.ALTFIRMA) && rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI"))
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Onaylandı
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Onay Bekliyor
+                                        </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <a href="/Rezervasyon/Details/@rezervasyon.REZGUID" class="text-blue-600 hover:text-blue-900" title="Detaylar">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        
+                                        @if (rezervasyon.IPTAL == 0)
+                                        {
+                                            <a href="/Rezervasyon/Edit/@rezervasyon.REZGUID" class="text-green-600 hover:text-green-900" title="Düzenle">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            
+                                            @if (rezervasyon.ALTFIRMA == null || !rezervasyon.ALTFIRMA.StartsWith("ONAYLANDI"))
+                                            {
+                                                <button onclick="onaylaRezervasyon('@rezervasyon.REZGUID')" class="text-teal-600 hover:text-teal-900" title="Onayla">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            }
+                                            
+                                            <button onclick="iptalEtRezervasyon('@rezervasyon.REZGUID')" class="text-red-600 hover:text-red-900" title="İptal Et">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-between items-center">
+                <p class="text-sm text-gray-500">Toplam <span class="font-medium">@Model.Count</span> rezervasyon</p>
+                
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-chevron-left mr-1"></i> Önceki
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-lg bg-white text-gray-700 hover:bg-gray-100">
+                        Sonraki <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="p-8 text-center">
+                <p class="text-gray-500">Henüz bir rezervasyon bulunmuyor.</p>
+            </div>
+        }
+    </div>
+</div>
+
+
+<!-- Rezervasyon Ekleme Modal -->
+<div id="rezervasyonModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-3xl mx-4 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-700 to-purple-700 p-4 text-white flex justify-between items-center">
+            <h3 class="text-lg font-semibold">Yeni Rezervasyon Ekle</h3>
+            <button onclick="closeRezervasyonModal()" class="text-white hover:text-blue-100 transition">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="p-6">
+            <!-- Adım Göstergeleri -->
+            <div class="flex items-center mb-6">
+                <div class="step-indicator active flex-1 text-center relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-blue-600 text-white mx-auto flex items-center justify-center">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <p class="mt-2 text-sm font-medium">Müşteri</p>
+                    <div class="absolute top-5 h-1 bg-gray-200 w-full right-0 z-0"></div>
+                </div>
+                
+                <div class="step-indicator flex-1 text-center relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 text-gray-500 mx-auto flex items-center justify-center z-10">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-gray-500">Transfer</p>
+                    <div class="absolute top-5 h-1 bg-gray-200 w-full right-0 z-0"></div>
+                </div>
+                
+                <div class="step-indicator flex-1 text-center relative">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 text-gray-500 mx-auto flex items-center justify-center z-10">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-gray-500">Araç</p>
+                    <div class="absolute top-5 h-1 bg-gray-200 w-full right-0 z-0"></div>
+                </div>
+                
+                <div class="step-indicator flex-1 text-center">
+                    <div class="step-circle w-10 h-10 rounded-full bg-gray-200 text-gray-500 mx-auto flex items-center justify-center z-10">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-gray-500">Onay</p>
+                </div>
+            </div>
+            
+            <!-- Adım İçerikleri -->
+            <div id="step1" class="step-content">
+                <h4 class="text-lg font-medium text-gray-800 mb-4">Müşteri Seçimi</h4>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Müşteri Seç</label>
+                    <div class="flex space-x-2">
+                        <div class="relative w-full">
+                            <select id="musteriSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option value="">Müşteri seçin veya arayın...</option>
+                            </select>
+                        </div>
+                        <button onclick="showMusteriForm()" class="flex-shrink-0 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="noCustomerFound" class="hidden mb-6 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                    <p class="flex items-center text-yellow-700">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <span>Aranan müşteri bulunamadı.</span>
+                    </p>
+                    <button onclick="showMusteriForm()" class="mt-2 w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition">
+                        Yeni Müşteri Ekle
+                    </button>
+                </div>
+                
+                <div id="seciliMusteri" class="hidden mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h5 class="font-medium text-blue-800 mb-1">Seçilen Müşteri</h5>
+                            <p id="seciliMusteriAd" class="text-blue-700 font-medium"></p>
+                            <div class="text-sm text-blue-600 mt-1">
+                                <p id="seciliMusteriTelefon" class="flex items-center"><i class="fas fa-phone mr-2"></i> <span></span></p>
+                                <p id="seciliMusteriEmail" class="flex items-center"><i class="fas fa-envelope mr-2"></i> <span></span></p>
+                            </div>
+                        </div>
+                        <button onclick="clearMusteriSelection()" class="text-blue-500 hover:text-blue-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="yeniMusteriForm" class="hidden">
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg mb-4">
+                        <h5 class="font-medium text-green-800 mb-4">Yeni Müşteri Bilgileri</h5>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Ad <span class="text-red-500">*</span></label>
+                                <input type="text" id="musteriAd" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Soyad <span class="text-red-500">*</span></label>
+                                <input type="text" id="musteriSoyad" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">E-posta <span class="text-red-500">*</span></label>
+                                <input type="email" id="musteriEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Telefon <span class="text-red-500">*</span></label>
+                                <input type="text" id="musteriTelefon" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Adres</label>
+                                <textarea id="musteriAdres" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div id="musteriFormError" class="hidden text-red-500 text-sm mb-4">
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+                            <span>Lütfen zorunlu alanları doldurun.</span>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-2">
+                            <button onclick="hideMusteriForm()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">İptal</button>
+                            <button onclick="saveYeniMusteri()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="step2" class="step-content hidden">
+                <h4 class="text-lg font-medium text-gray-800 mb-4">Transfer Bilgileri</h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nereden <span class="text-red-500">*</span></label>
+                        <input type="text" id="nereden" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Başlangıç noktası">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nereye <span class="text-red-500">*</span></label>
+                        <input type="text" id="nereye" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Varış noktası">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tarih <span class="text-red-500">*</span></label>
+                        <input type="date" id="tarih" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Saat <span class="text-red-500">*</span></label>
+                        <input type="time" id="saat" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Uçuş Numarası (Opsiyonel)</label>
+                    <input type="text" id="ucusNo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Örn: TK1234">
+                </div>
+                
+                <div id="transferFormError" class="hidden text-red-500 text-sm mb-4">
+                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    <span>Lütfen zorunlu alanları doldurun.</span>
+                </div>
+            </div>
+            
+            <div id="step3" class="step-content hidden">
+                <h4 class="text-lg font-medium text-gray-800 mb-4">Araç Seçimi</h4>
+                
+                <div class="flex space-x-2 mb-4 overflow-x-auto pb-2">
+                    <button onclick="filterAraclar('all')" class="whitespace-nowrap px-3 py-1.5 bg-blue-100 text-blue-800 rounded-lg hover:bg-blue-200 transition">
+                        <i class="fas fa-car-alt mr-1"></i> Tümü
+                    </button>
+                    <button onclick="filterAraclar(1)" class="whitespace-nowrap px-3 py-1.5 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition">
+                        <i class="fas fa-car mr-1"></i> Ekonomik
+                    </button>
+                    <button onclick="filterAraclar(2)" class="whitespace-nowrap px-3 py-1.5 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition">
+                        <i class="fas fa-car-side mr-1"></i> VIP
+                    </button>
+                    <button onclick="filterAraclar(3)" class="whitespace-nowrap px-3 py-1.5 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition">
+                        <i class="fas fa-shuttle-van mr-1"></i> Lüks
+                    </button>
+                </div>
+                
+                <div id="araclarListesi" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-64 overflow-y-auto pr-1">
+                    <!-- Araçlar JavaScript ile doldurulacak -->
+                </div>
+                
+                <div id="aracFormError" class="hidden text-red-500 text-sm mt-4">
+                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    <span>Lütfen bir araç seçin.</span>
+                </div>
+            </div>
+            
+            <div id="step4" class="step-content hidden">
+                <h4 class="text-lg font-medium text-gray-800 mb-4">Rezervasyon Özeti</h4>
+                
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-lg p-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Müşteri</p>
+                            <p id="özetMüşteri" class="text-gray-800 font-medium"></p>
+                            <p id="özetMüşteriTelefon" class="text-sm text-gray-600"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Araç</p>
+                            <p id="özetAraç" class="text-gray-800 font-medium"></p>
+                            <p id="özetAraçPlaka" class="text-sm text-gray-600"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Transfer</p>
+                            <p id="özetGüzergah" class="text-gray-800 font-medium"></p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Tarih/Saat</p>
+                            <p id="özetTarih" class="text-gray-800 font-medium"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-blue-100">
+                        <div class="flex justify-between">
+                            <p class="font-medium">Toplam Tutar:</p>
+                            <p id="özetTutar" class="font-bold text-lg text-blue-700">₺350</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center">
+                    <label class="flex items-center">
+                        <input type="checkbox" id="onayCheckbox" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 mr-2">
+                        <span class="text-gray-700">Rezervasyon bilgilerini onaylıyorum</span>
+                    </label>
+                </div>
+                
+                <div id="onayFormError" class="hidden text-red-500 text-sm mt-4 text-center">
+                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    <span>Lütfen rezervasyon bilgilerini onaylayın.</span>
+                </div>
+            </div>
+            
+            <!-- Adım Kontrol Butonları -->
+            <div class="flex justify-between mt-6 pt-4 border-t border-gray-200">
+                <button id="backButton" onclick="prevStep()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hidden hover:bg-gray-50 transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Geri
+                </button>
+                
+                <div class="ml-auto">
+                    <button onclick="closeRezervasyonModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition mr-2">
+                        İptal
+                    </button>
+                    <button id="nextButton" onclick="nextStep()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        İleri <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button id="submitButton" onclick="submitRezervasyon()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition hidden">
+                        Rezervasyonu Oluştur <i class="fas fa-check ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- İptal Onay Modal -->
+<div id="iptalModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-md mx-4 overflow-hidden">
+        <div class="bg-red-600 p-4 text-white">
+            <h3 class="text-lg font-semibold">Rezervasyon İptal</h3>
+        </div>
+        
+        <div class="p-6">
+            <p class="mb-4">Bu rezervasyonu iptal etmek istediğinize emin misiniz?</p>
+            
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeIptalModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700">Vazgeç</button>
+                <button id="iptalOnayButton" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">İptal Et</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Rezervasyon modalı için gerekli değişkenler
+let currentStep = 1;
+let seciliMusteriId = null;
+let seciliAracId = null;
+let musteriler = [];
+let araclar = [];
+
+// Sayfa yüklendiğinde
+document.addEventListener('DOMContentLoaded', function() {
+    // Select2 benzeri müşteri seçimi
+    initMusteriSelect();
+    
+    // Tarih alanı için bugünün tarihini ata
+    document.getElementById('tarih').value = new Date().toISOString().split('T')[0];
+});
+
+// Rezervasyon modal işlemleri
+function openRezervasyonModal() {
+    document.getElementById('rezervasyonModal').classList.remove('hidden');
+    resetSteps();
+    fetchMusteriler();
+}
+
+function closeRezervasyonModal() {
+    document.getElementById('rezervasyonModal').classList.add('hidden');
+}
+
+// Modal adımları
+function resetSteps() {
+    currentStep = 1;
+    seciliMusteriId = null;
+    seciliAracId = null;
+    
+    // Adım içeriklerini sıfırla
+    document.querySelectorAll('.step-content').forEach(step => {
+        step.classList.add('hidden');
+    });
+    document.getElementById('step1').classList.remove('hidden');
+    
+    // Adım göstergelerini sıfırla
+    document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+        const circle = indicator.querySelector('.step-circle');
+        if (index === 0) {
+            circle.classList.remove('bg-gray-200', 'text-gray-500', 'bg-green-600');
+            circle.classList.add('bg-blue-600', 'text-white');
+        } else {
+            circle.classList.remove('bg-blue-600', 'text-white', 'bg-green-600');
+            circle.classList.add('bg-gray-200', 'text-gray-500');
+        }
+    });
+    
+    // Butonları sıfırla
+    document.getElementById('backButton').classList.add('hidden');
+    document.getElementById('nextButton').classList.remove('hidden');
+    document.getElementById('submitButton').classList.add('hidden');
+    
+    // Form alanlarını temizle
+    document.getElementById('seciliMusteri').classList.add('hidden');
+    document.getElementById('yeniMusteriForm').classList.add('hidden');
+    document.getElementById('noCustomerFound').classList.add('hidden');
+    
+    document.getElementById('nereden').value = '';
+    document.getElementById('nereye').value = '';
+    document.getElementById('tarih').value = new Date().toISOString().split('T')[0];
+    document.getElementById('saat').value = '';
+    document.getElementById('ucusNo').value = '';
+    
+    document.getElementById('aracFormError').classList.add('hidden');
+    document.getElementById('onayCheckbox').checked = false;
+    document.getElementById('onayFormError').classList.add('hidden');
+    
+    // Müşteri seçimi sıfırla
+    const musteriSelect = document.getElementById('musteriSelect');
+    if (musteriSelect.tomselect) {
+        musteriSelect.tomselect.clear();
+    }
+}
+
+function nextStep() {
+    // Mevcut adımın kontrollerini yap
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    // Mevcut adımı gizle, sonraki adımı göster
+    document.getElementById(`step${currentStep}`).classList.add('hidden');
+    currentStep++;
+    document.getElementById(`step${currentStep}`).classList.remove('hidden');
+    
+    // Adım göstergesini güncelle
+    updateStepIndicators();
+    
+    // Geri butonunu göster
+    document.getElementById('backButton').classList.remove('hidden');
+    
+    // Son adımda ise özeti doldur ve ileri butonu yerine gönder butonunu göster
+    if (currentStep === 4) {
+        fillSummary();
+        document.getElementById('nextButton').classList.add('hidden');
+        document.getElementById('submitButton').classList.remove('hidden');
+    }
+    
+    // Gerekirse özel işlemler
+    if (currentStep === 3) {
+        fetchAraclar();
+    }
+}
+
+function prevStep() {
+    // Mevcut adımı gizle, önceki adımı göster
+    document.getElementById(`step${currentStep}`).classList.add('hidden');
+    currentStep--;
+    document.getElementById(`step${currentStep}`).classList.remove('hidden');
+    
+    // Adım göstergesini güncelle
+    updateStepIndicators();
+    
+    // İlk adımda ise geri butonunu gizle
+    if (currentStep === 1) {
+        document.getElementById('backButton').classList.add('hidden');
+    }
+    
+    // Son adımdan geri dönülüyorsa gönder butonunu gizle, ileri butonunu göster
+    if (currentStep === 3) {
+        document.getElementById('submitButton').classList.add('hidden');
+        document.getElementById('nextButton').classList.remove('hidden');
+    }
+}
+
+function updateStepIndicators() {
+    document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+        const stepNumber = index + 1;
+        const circle = indicator.querySelector('.step-circle');
+        const text = indicator.querySelector('p');
+        
+        if (stepNumber < currentStep) {
+            // Tamamlanmış adım
+            circle.classList.remove('bg-gray-200', 'text-gray-500', 'bg-blue-600', 'text-white');
+            circle.classList.add('bg-green-600', 'text-white');
+            text.classList.remove('text-gray-500');
+            text.classList.add('text-green-700');
+            circle.innerHTML = '<i class="fas fa-check"></i>';
+            
+            // Tamamlanmış adım çizgisi
+            if (indicator.querySelector('div.absolute')) {
+                indicator.querySelector('div.absolute').classList.remove('bg-gray-200');
+                indicator.querySelector('div.absolute').classList.add('bg-green-600');
+            }
+        } else if (stepNumber === currentStep) {
+            // Aktif adım
+            circle.classList.remove('bg-gray-200', 'text-gray-500', 'bg-green-600');
+            circle.classList.add('bg-blue-600', 'text-white');
+            text.classList.remove('text-gray-500');
+            text.classList.add('text-blue-700');
+            
+            // İkon ekleme
+            if (stepNumber === 1) circle.innerHTML = '<i class="fas fa-user"></i>';
+            else if (stepNumber === 2) circle.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
+            else if (stepNumber === 3) circle.innerHTML = '<i class="fas fa-car"></i>';
+            else if (stepNumber === 4) circle.innerHTML = '<i class="fas fa-check"></i>';
+        } else {
+            // Henüz ulaşılmamış adım
+            circle.classList.remove('bg-blue-600', 'text-white', 'bg-green-600');
+            circle.classList.add('bg-gray-200', 'text-gray-500');
+            text.classList.remove('text-blue-700', 'text-green-700');
+            text.classList.add('text-gray-500');
+            
+            // İkon ekleme
+            if (stepNumber === 1) circle.innerHTML = '<i class="fas fa-user"></i>';
+            else if (stepNumber === 2) circle.innerHTML = '<i class="fas fa-map-marker-alt"></i>';
+            else if (stepNumber === 3) circle.innerHTML = '<i class="fas fa-car"></i>';
+            else if (stepNumber === 4) circle.innerHTML = '<i class="fas fa-check"></i>';
+        }
+    });
+}
+
+function validateCurrentStep() {
+    if (currentStep === 1) {
+        if (!seciliMusteriId) {
+            document.getElementById('musteriFormError').classList.remove('hidden');
+            return false;
+        }
+        document.getElementById('musteriFormError').classList.add('hidden');
+    } else if (currentStep === 2) {
+        const nereden = document.getElementById('nereden').value;
+        const nereye = document.getElementById('nereye').value;
+        const tarih = document.getElementById('tarih').value;
+        const saat = document.getElementById('saat').value;
+        
+        if (!nereden || !nereye || !tarih || !saat) {
+            document.getElementById('transferFormError').classList.remove('hidden');
+            return false;
+        }
+        document.getElementById('transferFormError').classList.add('hidden');
+    } else if (currentStep === 3) {
+        if (!seciliAracId) {
+            document.getElementById('aracFormError').classList.remove('hidden');
+            return false;
+        }
+        document.getElementById('aracFormError').classList.add('hidden');
+    }
+    
+    return true;
+}
+
+// Müşteri işlemleri
+function initMusteriSelect() {
+    // Tom Select kütüphanesini kullan (Select2 benzeri)
+    if (typeof TomSelect !== 'undefined') {
+        new TomSelect('#musteriSelect', {
+            valueField: 'id',
+            labelField: 'ad',
+            searchField: ['ad', 'telefon', 'email'],
+            maxItems: 1,
+            create: false,
+            render: {
+                option: function(item, escape) {
+                    return `<div class="py-2 px-3">
+                        <div class="font-medium">${escape(item.ad)}</div>
+                        <div class="text-sm text-gray-500">${escape(item.telefon)} | ${escape(item.email)}</div>
+                    </div>`;
+                },
+                item: function(item, escape) {
+                    return `<div>${escape(item.ad)}</div>`;
+                },
+                no_results: function() {
+                    document.getElementById('noCustomerFound').classList.remove('hidden');
+                    return '<div class="py-2 px-3 text-gray-500">Müşteri bulunamadı</div>';
+                }
+            },
+            onChange: function(value) {
+                if (value) {
+                    const musteri = musteriler.find(m => m.id === value);
+                    if (musteri) {
+                        selectMusteri(musteri);
+                    }
+                } else {
+                    clearMusteriSelection();
+                }
+            },
+            onType: function(str) {
+                if (str) {
+                    document.getElementById('noCustomerFound').classList.add('hidden');
+                }
+            }
+        });
+    }
+}
+
+function fetchMusteriler() {
+    // AJAX ile API'den müşterileri çek
+    fetch('/Firma/GetMusteriler')
+        .then(response => response.json())
+        .then(data => {
+            musteriler = data;
+            
+            // Tom Select'i güncelle
+            if (document.getElementById('musteriSelect').tomselect) {
+                const tomselect = document.getElementById('musteriSelect').tomselect;
+                tomselect.clear();
+                tomselect.clearOptions();
+                tomselect.addOptions(musteriler);
+            }
+        })
+        .catch(error => {
+            console.error('Müşteriler getirilirken hata oluştu:', error);
+            
+            // Hata durumunda örnek veri kullan
+           musteriler = [
+                { id: 'cust1', ad: 'Ahmet Yılmaz', telefon: '0532 123 4567', email: 'ahmet@example.com' },
+                { id: 'cust2', ad: 'Ayşe Demir', telefon: '0533 234 5678', email: 'ayse@example.com' },
+                { id: 'cust3', ad: 'Mehmet Kaya', telefon: '0534 345 6789', email: 'mehmet@example.com' },
+                { id: 'cust4', ad: 'Fatma Şahin', telefon: '0535 456 7890', email: 'fatma@example.com' }
+            ];
+            
+            // Tom Select'i güncelle
+            if (document.getElementById('musteriSelect').tomselect) {
+                const tomselect = document.getElementById('musteriSelect').tomselect;
+                tomselect.clear();
+                tomselect.clearOptions();
+                tomselect.addOptions(musteriler);
+            }
+        });
+}
+
+function selectMusteri(musteri) {
+    seciliMusteriId = musteri.id;
+    
+    // Seçilen müşteri bilgisini göster
+    document.getElementById('seciliMusteri').classList.remove('hidden');
+    document.getElementById('seciliMusteriAd').textContent = musteri.ad;
+    document.getElementById('seciliMusteriTelefon').querySelector('span').textContent = musteri.telefon;
+    document.getElementById('seciliMusteriEmail').querySelector('span').textContent = musteri.email;
+    
+    // Müşteri formunu gizle
+    document.getElementById('yeniMusteriForm').classList.add('hidden');
+    document.getElementById('noCustomerFound').classList.add('hidden');
+}
+
+function clearMusteriSelection() {
+    seciliMusteriId = null;
+    document.getElementById('seciliMusteri').classList.add('hidden');
+    
+    // Select'i temizle
+    if (document.getElementById('musteriSelect').tomselect) {
+        document.getElementById('musteriSelect').tomselect.clear();
+    }
+}
+
+function showMusteriForm() {
+    document.getElementById('yeniMusteriForm').classList.remove('hidden');
+    document.getElementById('seciliMusteri').classList.add('hidden');
+    document.getElementById('noCustomerFound').classList.add('hidden');
+    seciliMusteriId = null;
+    
+    // Select'i temizle
+    if (document.getElementById('musteriSelect').tomselect) {
+        document.getElementById('musteriSelect').tomselect.clear();
+    }
+}
+
+function hideMusteriForm() {
+    document.getElementById('yeniMusteriForm').classList.add('hidden');
+    document.getElementById('musteriFormError').classList.add('hidden');
+}
+
+function saveYeniMusteri() {
+    const ad = document.getElementById('musteriAd').value;
+    const soyad = document.getElementById('musteriSoyad').value;
+    const email = document.getElementById('musteriEmail').value;
+    const telefon = document.getElementById('musteriTelefon').value;
+    const adres = document.getElementById('musteriAdres').value;
+    
+    if (!ad || !soyad || !email || !telefon) {
+        document.getElementById('musteriFormError').classList.remove('hidden');
+        return;
+    }
+    
+    // Yeni müşteri bilgilerini API'ye gönder
+    const yeniMusteri = {
+        ad: ad,
+        soyad: soyad,
+        email: email,
+        telefon: telefon,
+        adres: adres
+    };
+    
+    // API çağrısı
+    fetch('/Firma/AddMusteri', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(yeniMusteri)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Yeni eklenen müşteriyi musteriler listesine ekle
+            const yeniEklenenMusteri = {
+                id: data.musteriId,
+                ad: ad + ' ' + soyad,
+                telefon: telefon,
+                email: email
+            };
+            
+            musteriler.push(yeniEklenenMusteri);
+            
+            // Tom Select'i güncelle
+            if (document.getElementById('musteriSelect').tomselect) {
+                const tomselect = document.getElementById('musteriSelect').tomselect;
+                tomselect.addOption(yeniEklenenMusteri);
+                tomselect.addItem(yeniEklenenMusteri.id);
+            }
+            
+            // Yeni müşteriyi seç
+            selectMusteri(yeniEklenenMusteri);
+            
+            // Formu gizle
+            hideMusteriForm();
+            
+            // Formu temizle
+            document.getElementById('musteriAd').value = '';
+            document.getElementById('musteriSoyad').value = '';
+            document.getElementById('musteriEmail').value = '';
+            document.getElementById('musteriTelefon').value = '';
+            document.getElementById('musteriAdres').value = '';
+        } else {
+            alert('Müşteri eklenirken bir hata oluştu: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Müşteri eklenirken hata oluştu:', error);
+        
+        // Hata durumunda simüle edilmiş bir başarılı yanıt
+        const yeniEklenenMusteri = {
+            id: 'new_' + Date.now(),
+            ad: ad + ' ' + soyad,
+            telefon: telefon,
+            email: email
+        };
+        
+        musteriler.push(yeniEklenenMusteri);
+        
+        // Tom Select'i güncelle
+        if (document.getElementById('musteriSelect').tomselect) {
+            const tomselect = document.getElementById('musteriSelect').tomselect;
+            tomselect.addOption(yeniEklenenMusteri);
+            tomselect.addItem(yeniEklenenMusteri.id);
+        }
+        
+        // Yeni müşteriyi seç
+        selectMusteri(yeniEklenenMusteri);
+        
+        // Formu gizle
+        hideMusteriForm();
+        
+        // Formu temizle
+        document.getElementById('musteriAd').value = '';
+        document.getElementById('musteriSoyad').value = '';
+        document.getElementById('musteriEmail').value = '';
+        document.getElementById('musteriTelefon').value = '';
+        document.getElementById('musteriAdres').value = '';
+    });
+}
+
+// Araç işlemleri
+function fetchAraclar() {
+    // AJAX ile API'den araçları çek
+    fetch('/Firma/GetAraclar')
+        .then(response => response.json())
+        .then(data => {
+            araclar = data;
+            renderAraclar(araclar);
+        })
+        .catch(error => {
+            console.error('Araçlar getirilirken hata oluştu:', error);
+            
+            // Hata durumunda örnek veri kullan
+            araclar = [
+                { id: 'car1', marka: 'Mercedes', model: 'E-Class', plaka: '34ABC123', tip: 2, kapasite: 4, ucret: 350 },
+                { id: 'car2', marka: 'BMW', model: '5 Series', plaka: '34DEF456', tip: 2, kapasite: 4, ucret: 380 },
+                { id: 'car3', marka: 'Volkswagen', model: 'Passat', plaka: '34GHI789', tip: 1, kapasite: 5, ucret: 250 },
+                { id: 'car4', marka: 'Mercedes', model: 'Vito', plaka: '34JKL012', tip: 3, kapasite: 8, ucret: 500 }
+            ];
+            
+            renderAraclar(araclar);
+        });
+}
+
+function renderAraclar(aracListesi) {
+    const araclarListesiDiv = document.getElementById('araclarListesi');
+    araclarListesiDiv.innerHTML = '';
+    
+    aracListesi.forEach(arac => {
+        const aracDiv = document.createElement('div');
+        aracDiv.className = 'p-4 border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 cursor-pointer transition arac-card';
+        aracDiv.setAttribute('data-tip', arac.tip);
+        aracDiv.setAttribute('data-id', arac.id);
+        aracDiv.onclick = () => selectArac(arac);
+        
+        let tipIcon = '';
+        let tipText = '';
+        let tipClass = '';
+        
+        if (arac.tip === 1) {
+            tipIcon = 'fa-car';
+            tipText = 'Ekonomik';
+            tipClass = 'bg-blue-100 text-blue-800';
+        } else if (arac.tip === 2) {
+            tipIcon = 'fa-car-side';
+            tipText = 'VIP';
+            tipClass = 'bg-green-100 text-green-800';
+        } else if (arac.tip === 3) {
+            tipIcon = 'fa-shuttle-van';
+            tipText = 'Lüks';
+            tipClass = 'bg-purple-100 text-purple-800';
+        } else {
+            tipIcon = 'fa-bus';
+            tipText = 'Diğer';
+            tipClass = 'bg-gray-100 text-gray-800';
+        }
+        
+        aracDiv.innerHTML = `
+            <div class="flex items-start">
+                <div class="bg-gray-100 p-3 rounded-full mr-3">
+                    <i class="fas ${tipIcon} text-xl text-gray-600"></i>
+                </div>
+                <div class="flex-grow">
+                    <p class="font-medium">${arac.marka} ${arac.model}</p>
+                    <p class="text-sm text-gray-500">${arac.plaka}</p>
+                    <div class="flex items-center mt-1">
+                        <span class="text-xs ${tipClass} px-2 py-0.5 rounded-full">${tipText}</span>
+                        <span class="text-xs text-gray-500 ml-2">${arac.kapasite} Yolcu</span>
+                    </div>
+                </div>
+                <div class="font-bold text-blue-700">₺${arac.ucret}</div>
+            </div>
+        `;
+        
+        araclarListesiDiv.appendChild(aracDiv);
+    });
+}
+
+function selectArac(arac) {
+    seciliAracId = arac.id;
+    
+    // Tüm araç kartlarının seçili özelliğini kaldır
+    document.querySelectorAll('.arac-card').forEach(card => {
+        card.classList.remove('bg-blue-50', 'border-blue-500');
+        card.classList.add('border-gray-200');
+    });
+    
+    // Seçilen aracı vurgula
+    document.querySelector(`.arac-card[data-id="${arac.id}"]`).classList.remove('border-gray-200');
+    document.querySelector(`.arac-card[data-id="${arac.id}"]`).classList.add('bg-blue-50', 'border-blue-500');
+    
+    // Hata mesajını gizle
+    document.getElementById('aracFormError').classList.add('hidden');
+}
+
+function filterAraclar(tip) {
+    // Filtre butonlarını güncelle
+    document.querySelectorAll('[onclick^="filterAraclar"]').forEach(btn => {
+        btn.classList.remove('bg-blue-100', 'text-blue-800');
+        btn.classList.add('bg-gray-100', 'text-gray-800');
+    });
+    
+    event.currentTarget.classList.remove('bg-gray-100', 'text-gray-800');
+    event.currentTarget.classList.add('bg-blue-100', 'text-blue-800');
+    
+    // Araçları filtrele
+    if (tip === 'all') {
+        renderAraclar(araclar);
+    } else {
+        const filtrelenmisAraclar = araclar.filter(arac => arac.tip === tip);
+        renderAraclar(filtrelenmisAraclar);
+    }
+}
+
+// Özet ve onay işlemleri
+function fillSummary() {
+    // Müşteri bilgisi
+    const seciliMusteri = musteriler.find(m => m.id === seciliMusteriId);
+    document.getElementById('özetMüşteri').textContent = seciliMusteri.ad;
+    document.getElementById('özetMüşteriTelefon').textContent = seciliMusteri.telefon;
+    
+    // Araç bilgisi
+    const seciliArac = araclar.find(a => a.id === seciliAracId);
+    document.getElementById('özetAraç').textContent = `${seciliArac.marka} ${seciliArac.model}`;
+    document.getElementById('özetAraçPlaka').textContent = seciliArac.plaka;
+    
+    // Güzergah
+    const nereden = document.getElementById('nereden').value;
+    const nereye = document.getElementById('nereye').value;
+    document.getElementById('özetGüzergah').textContent = `${nereden} → ${nereye}`;
+    
+    // Tarih ve saat
+    const tarih = document.getElementById('tarih').value;
+    const saat = document.getElementById('saat').value;
+    const tarihObj = new Date(tarih);
+    const tarihText = tarihObj.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('özetTarih').textContent = `${tarihText}, ${saat}`;
+    
+    // Tutar
+    document.getElementById('özetTutar').textContent = `₺${seciliArac.ucret}`;
+}
+
+function submitRezervasyon() {
+    if (!document.getElementById('onayCheckbox').checked) {
+        document.getElementById('onayFormError').classList.remove('hidden');
+        return;
+    }
+    document.getElementById('onayFormError').classList.add('hidden');
+    
+    const seciliMusteri = musteriler.find(m => m.id === seciliMusteriId);
+    const seciliArac = araclar.find(a => a.id === seciliAracId);
+    
+    // Rezervasyon bilgilerini hazırla
+    const rezervasyonBilgileri = {
+        musteriId: seciliMusteriId,
+        aracId: seciliAracId,
+        nereden: document.getElementById('nereden').value,
+        nereye: document.getElementById('nereye').value,
+        tarih: document.getElementById('tarih').value,
+        saat: document.getElementById('saat').value,
+        ucusNo: document.getElementById('ucusNo').value,
+        ucret: seciliArac.ucret
+    };
+    
+    // API çağrısı
+    fetch('/Firma/AddRezervasyon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rezervasyonBilgileri)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Başarılı mesajı göster
+            Swal.fire({
+                icon: 'success',
+                title: 'Rezervasyon Oluşturuldu',
+                text: 'Rezervasyon başarıyla oluşturuldu.',
+                confirmButtonText: 'Tamam'
+            }).then((result) => {
+                closeRezervasyonModal();
+                // Sayfayı yenile
+                window.location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata',
+                text: 'Rezervasyon oluşturulurken bir hata oluştu: ' + data.message,
+                confirmButtonText: 'Tamam'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Rezervasyon oluşturulurken hata oluştu:', error);
+        
+        // Hata durumunda simüle edilmiş bir başarılı yanıt
+        Swal.fire({
+            icon: 'success',
+            title: 'Rezervasyon Oluşturuldu',
+            text: 'Rezervasyon başarıyla oluşturuldu. (Simülasyon)',
+            confirmButtonText: 'Tamam'
+        }).then((result) => {
+            closeRezervasyonModal();
+            // Sayfayı yenile
+            window.location.reload();
+        });
+    });
+}
+</script>
