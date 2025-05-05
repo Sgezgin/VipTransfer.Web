@@ -21,7 +21,6 @@ namespace VipTransfer.Web.Controllers
             _context = context;
         }
 
-
         public IActionResult DashboardMain()
         {
             // Admin kontrolü
@@ -65,8 +64,9 @@ namespace VipTransfer.Web.Controllers
             ViewBag.Araclar = araclar;
 
             return View(sonRezervasyonlar);
-        }
-        // Firma dashboard
+        }    // Firma dashboard
+
+
         public IActionResult Dashboard()
         {
             // Admin kontrolü
@@ -1269,5 +1269,206 @@ namespace VipTransfer.Web.Controllers
             return View(rezervasyonlar);
         }
 
+
+        // Add this method to your FirmaController.cs file
+
+        [HttpPost]
+        public IActionResult CreateReservationFromModal([FromBody] ReservationCreateModel model)
+        {
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return Json(new { success = false, message = "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın." });
+            }
+
+            // Model doğrulama
+            if (string.IsNullOrEmpty(model.MusteriId) ||
+                string.IsNullOrEmpty(model.Nereden) ||
+                string.IsNullOrEmpty(model.Nereye) ||
+                string.IsNullOrEmpty(model.AracId))
+            {
+                return Json(new { success = false, message = "Lütfen tüm gerekli alanları doldurun." });
+            }
+
+            try
+            {
+                // Müşteri bilgilerini getir
+                var musteri = _context.MUSTERI.FirstOrDefault(m => m.MUSTERIGUID == model.MusteriId);
+                if (musteri == null)
+                {
+                    return Json(new { success = false, message = "Müşteri bulunamadı." });
+                }
+
+                // Araç bilgilerini getir
+                var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == model.AracId);
+                if (arac == null)
+                {
+                    return Json(new { success = false, message = "Araç bulunamadı." });
+                }
+
+                // Tarih kontrolü
+                if (!DateTime.TryParse(model.Tarih, out DateTime tarih))
+                {
+                    return Json(new { success = false, message = "Geçersiz tarih formatı." });
+                }
+
+                // Yeni rezervasyon oluştur
+                var rezervasyon = new REZERVASYONModels
+                {
+                    REZGUID = Guid.NewGuid().ToString(),
+                    MUSTERIGUID = model.MusteriId,
+                    ARACGUID = model.AracId,
+                    FIRMAGUID = arac.FIRMAGUID,
+                    NERDEN = model.Nereden,
+                    NEREYE = model.Nereye,
+                    REZTARIH = tarih,
+                    REZSAAT = model.Saat,
+                    UCUSNO = model.UcusNo,
+                    UCRET = decimal.Parse(model.Ucret),
+                    TAHMINIKM = 0, // Bu değer hesaplanabilir
+                    IPTAL = 0,
+                    KAYITKULL = username,
+                    KAYITTARIH = DateTime.Now
+                };
+
+                // Veritabanına kaydet
+                _context.REZERVASYON.Add(rezervasyon);
+                _context.SaveChanges();
+
+                return Json(new { success = true, message = "Rezervasyon başarıyla oluşturuldu.", rezervasyonId = rezervasyon.REZGUID });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Hata oluştu: {ex.Message}" });
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult GetCustomers(string searchTerm = "")
+        {
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return Json(new { success = false, message = "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın." });
+            }
+
+            try
+            {
+                // Sorguyu oluştur
+                var query = _context.MUSTERI.AsQueryable();
+
+                // Arama terimi varsa filtreleme yap
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    searchTerm = searchTerm.ToLower();
+                    query = query.Where(m =>
+                        (m.MADISOYADI != null && m.MADISOYADI.ToLower().Contains(searchTerm)) ||
+                        (m.MADI != null && m.MADI.ToLower().Contains(searchTerm)) ||
+                        (m.MSOYADI != null && m.MSOYADI.ToLower().Contains(searchTerm)) ||
+                        (m.TELEFON1 != null && m.TELEFON1.Contains(searchTerm)) ||
+                        (m.TELEFON2 != null && m.TELEFON2.Contains(searchTerm)) ||
+                        (m.EMAIL != null && m.EMAIL.ToLower().Contains(searchTerm))
+                    );
+                }
+
+                // Sıralama ve limitleme
+                var musteriler = query
+                    .OrderBy(m => m.MADISOYADI)
+                    .Take(50) // Çok fazla veri dönmemesi için limit
+                    .Select(m => new
+                    {
+                        id = m.MUSTERIGUID,
+                        ad = m.MADISOYADI,
+                        telefon = m.TELEFON1,
+                        email = m.EMAIL
+                    })
+                    .ToList();
+
+                return Json(new { success = true, data = musteriler });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Hata oluştu: {ex.Message}" });
+            }
+        }
+
+
+
+        [HttpGet]
+        public IActionResult GetVehicles()
+        {
+            // Oturum kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return Json(new { success = false, message = "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın." });
+            }
+
+            // Firma kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+
+            try
+            {
+                // Sorguyu oluştur
+                var query = _context.ARACLAR.AsQueryable();
+
+                // Admin değilse sadece kendi firmasının araçlarını getir
+                if (userType == "Firma" && HttpContext.Session.GetInt32("IsAdmin") != 1)
+                {
+                    query = query.Where(a => a.FIRMAGUID == userGuid);
+                }
+
+                // Araçları getir
+                var araclar = query
+                    .Select(a => new
+                    {
+                        id = a.ARACGUID,
+                        marka = a.MARKA,
+                        model = a.MODEL,
+                        plaka = a.PLAKA,
+                        tip = a.TIP,
+                        tipAdi = a.TIP == 1 ? "Ekonomik" :
+                                 a.TIP == 2 ? "VIP" :
+                                 a.TIP == 3 ? "Lüks" : "Diğer",
+                        icon = a.TIP == 1 ? "fa-car" :
+                               a.TIP == 2 ? "fa-car-side" :
+                               a.TIP == 3 ? "fa-shuttle-van" : "fa-bus",
+                        bgColor = a.TIP == 1 ? "bg-blue-100" :
+                                  a.TIP == 2 ? "bg-green-100" :
+                                  a.TIP == 3 ? "bg-purple-100" : "bg-gray-100",
+                        textColor = a.TIP == 1 ? "text-blue-600" :
+                                    a.TIP == 2 ? "text-green-600" :
+                                    a.TIP == 3 ? "text-purple-600" : "text-gray-600"
+                    })
+                    .OrderBy(a => a.marka)
+                    .ToList();
+
+                return Json(new { success = true, data = araclar });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Hata oluştu: {ex.Message}" });
+            }
+        }
+
+
+
     }
+}
+
+// Rezervasyon model sınıfı
+public class ReservationCreateModel
+{
+    public string MusteriId { get; set; }
+    public string Nereden { get; set; }
+    public string Nereye { get; set; }
+    public string Tarih { get; set; }
+    public string Saat { get; set; }
+    public string UcusNo { get; set; }
+    public string AracId { get; set; }
+    public string Ucret { get; set; }
 }
