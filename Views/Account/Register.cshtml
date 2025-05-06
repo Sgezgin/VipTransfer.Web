@@ -1,93 +1,237 @@
 @model VipTransfer.Web.Models.ViewModels.RegisterViewModel
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Kayıt Ol";
 }
 
-<div class="flex justify-center my-8">
+<div class="fixed inset-0 bg-gradient-to-br from-blue-900 to-blue-600 z-0"></div>
+
+<div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-lg">
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <div class="bg-blue-700 p-6 text-white text-center">
-                <h2 class="text-2xl font-bold">@ViewData["Title"]</h2>
-                <p class="mt-2 text-blue-100">VIP Transfer'e hoş geldiniz</p>
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105">
+            <div class="bg-gradient-to-r from-blue-700 to-blue-500 p-8 text-white text-center relative">
+                <div class="absolute top-4 left-4">
+                    <i class="fas fa-user-plus text-3xl opacity-50"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-3">VIP Transfer</h2>
+                <p class="text-blue-100 mb-4">Yeni Hesap Oluştur</p>
+                <div class="absolute top-4 right-4">
+                    <i class="fas fa-shield-alt text-2xl opacity-50"></i>
+                </div>
             </div>
             
-            <div class="p-6">
-                <form asp-action="Register" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="UserType" class="block text-gray-700 text-sm font-medium mb-2">Hesap Türü</label>
-                        <div class="flex gap-4">
-                            <div class="flex items-center">
-                                <input type="radio" id="user-type-0" name="UserType" value="0" checked class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                <label for="user-type-0" class="ml-2 block text-sm text-gray-700">Müşteri</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="radio" id="user-type-1" name="UserType" value="1" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                <label for="user-type-1" class="ml-2 block text-sm text-gray-700">Firma</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label asp-for="FirstName" class="block text-gray-700 text-sm font-medium mb-2">Ad</label>
-                            <input asp-for="FirstName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Adınız">
-                            <span asp-validation-for="FirstName" class="text-sm text-red-600"></span>
-                        </div>
-                        
-                        <div>
-                            <label asp-for="LastName" class="block text-gray-700 text-sm font-medium mb-2">Soyad</label>
-                            <input asp-for="LastName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Soyadınız">
-                            <span asp-validation-for="LastName" class="text-sm text-red-600"></span>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="Username" class="block text-gray-700 text-sm font-medium mb-2">Kullanıcı Adı</label>
-                        <input asp-for="Username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Kullanıcı adınız">
-                        <span asp-validation-for="Username" class="text-sm text-red-600"></span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="Email" class="block text-gray-700 text-sm font-medium mb-2">E-posta</label>
-                        <input asp-for="Email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="ornek@email.com">
-                        <span asp-validation-for="Email" class="text-sm text-red-600"></span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="Phone" class="block text-gray-700 text-sm font-medium mb-2">Telefon</label>
-                        <input asp-for="Phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="05XX XXX XX XX">
-                        <span asp-validation-for="Phone" class="text-sm text-red-600"></span>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="Password" class="block text-gray-700 text-sm font-medium mb-2">Şifre</label>
-                        <input asp-for="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Şifreniz">
-                        <span asp-validation-for="Password" class="text-sm text-red-600"></span>
-                    </div>
+            <div class="p-8">
+                <form id="registerForm" asp-action="Register" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4 bg-red-50 p-3 rounded-lg"></div>
                     
                     <div class="mb-6">
-                        <label asp-for="ConfirmPassword" class="block text-gray-700 text-sm font-medium mb-2">Şifre Tekrarı</label>
-                        <input asp-for="ConfirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Şifrenizi tekrar girin">
-                        <span asp-validation-for="ConfirmPassword" class="text-sm text-red-600"></span>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-user-tag mr-2 text-blue-600"></i>Hesap Türü
+                        </label>
+                        <div class="flex gap-4">
+                            <div class="flex items-center">
+                                <input type="radio" id="user-type-0" name="UserType" value="0" checked 
+                                       class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <label for="user-type-0" class="ml-2 block text-sm text-gray-700">
+                                    <i class="fas fa-user mr-1"></i>Müşteri
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="user-type-1" name="UserType" value="1" 
+                                       class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                <label for="user-type-1" class="ml-2 block text-sm text-gray-700">
+                                    <i class="fas fa-building mr-1"></i>Firma
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="relative">
+                            <label asp-for="FirstName" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-user mr-2 text-blue-600"></i>Ad
+                            </label>
+                            <input asp-for="FirstName" 
+                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                                   placeholder="Adınız" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <span asp-validation-for="FirstName" class="text-sm text-red-600 mt-1 block"></span>
+                        </div>
+                        
+                        <div class="relative">
+                            <label asp-for="LastName" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-user mr-2 text-blue-600"></i>Soyad
+                            </label>
+                            <input asp-for="LastName" 
+                                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                                   placeholder="Soyadınız" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <span asp-validation-for="LastName" class="text-sm text-red-600 mt-1 block"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6 relative">
+                        <label asp-for="Username" class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-user-circle mr-2 text-blue-600"></i>Kullanıcı Adı
+                        </label>
+                        <input asp-for="Username" 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                               placeholder="Kullanıcı adınız" required>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user-circle text-gray-400"></i>
+                        </div>
+                        <span asp-validation-for="Username" class="text-sm text-red-600 mt-1 block"></span>
+                    </div>
+                    
+                    <div class="mb-6 relative">
+                        <label asp-for="Email" class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-600"></i>E-posta
+                        </label>
+                        <input asp-for="Email" type="email" 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                               placeholder="ornek@email.com" required>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <span asp-validation-for="Email" class="text-sm text-red-600 mt-1 block"></span>
+                    </div>
+                    
+                    <div class="mb-6 relative">
+                        <label asp-for="Phone" class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-phone mr-2 text-blue-600"></i>Telefon
+                        </label>
+                        <input asp-for="Phone" type="tel" 
+                               class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                               placeholder="05XX XXX XX XX" required>
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-phone text-gray-400"></i>
+                        </div>
+                        <span asp-validation-for="Phone" class="text-sm text-red-600 mt-1 block"></span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="relative">
+                            <label asp-for="Password" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-lock mr-2 text-blue-600"></i>Şifre
+                            </label>
+                            <input asp-for="Password" type="password" 
+                                   class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                                   placeholder="Şifreniz" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button type="button" id="togglePassword1" class="focus:outline-none">
+                                    <i class="fas fa-eye-slash text-gray-400"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-sm text-red-600 mt-1 block"></span>
+                        </div>
+                        
+                        <div class="relative">
+                            <label asp-for="ConfirmPassword" class="block text-gray-700 text-sm font-medium mb-2">
+                                <i class="fas fa-lock mr-2 text-blue-600"></i>Şifre Tekrarı
+                            </label>
+                            <input asp-for="ConfirmPassword" type="password" 
+                                   class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" 
+                                   placeholder="Şifrenizi tekrar girin" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button type="button" id="togglePassword2" class="focus:outline-none">
+                                    <i class="fas fa-eye-slash text-gray-400"></i>
+                                </button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-sm text-red-600 mt-1 block"></span>
+                        </div>
                     </div>
                     
                     <div>
-                        <button type="submit" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
-                            Kayıt Ol
+                        <button type="submit" id="registerButton"
+                                class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition duration-300 flex items-center justify-center">
+                            <span id="registerText">Kayıt Ol</span>
+                            <div id="registerLoader" class="hidden ml-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
                         </button>
                     </div>
                 </form>
                 
                 <div class="mt-6 text-center">
-                    <p class="text-gray-600">Zaten bir hesabınız var mı? <a href="/Account/Login" class="text-blue-700 hover:underline font-medium">Giriş Yap</a></p>
+                    <p class="text-gray-600">
+                        Zaten bir hesabınız var mı? 
+                        <a href="/Account/Login" class="text-blue-700 hover:underline font-medium">
+                            Giriş Yap
+                        </a>
+                    </p>
                 </div>
             </div>
+        </div>
+
+        <!-- VIP Transfer Logo ve Slogan -->
+        <div class="text-center mt-6 text-white">
+            <div class="flex justify-center items-center mb-2">
+                <i class="fas fa-car-side text-4xl mr-3"></i>
+                <span class="text-2xl font-bold">VIP Transfer</span>
+            </div>
+            <p class="text-blue-100">Güvenli ve Konforlu Yolculukların Adresi</p>
         </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        body {
+            overflow: hidden;
+        }
+        .container {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+    </style>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const registerForm = document.getElementById('registerForm');
+            const registerButton = document.getElementById('registerButton');
+            const registerText = document.getElementById('registerText');
+            const registerLoader = document.getElementById('registerLoader');
+            
+            const passwordInput1 = document.getElementById('Password');
+            const passwordInput2 = document.getElementById('ConfirmPassword');
+            const togglePasswordButton1 = document.getElementById('togglePassword1');
+            const togglePasswordButton2 = document.getElementById('togglePassword2');
+
+            // Şifre gösterme/gizleme
+            function togglePasswordVisibility(input, toggleButton) {
+                toggleButton.addEventListener('click', function () {
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('fa-eye-slash');
+                    this.querySelector('i').classList.toggle('fa-eye');
+                });
+            }
+
+            togglePasswordVisibility(passwordInput1, togglePasswordButton1);
+            togglePasswordVisibility(passwordInput2, togglePasswordButton2);
+
+            // Form gönderme
+            registerForm.addEventListener('submit', function (e) {
+                registerText.classList.add('hidden');
+                registerLoader.classList.remove('hidden');
+                registerButton.disabled = true;
+            });
+        });
+    </script>
 }

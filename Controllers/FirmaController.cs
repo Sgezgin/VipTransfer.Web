@@ -21,7 +21,7 @@ namespace VipTransfer.Web.Controllers
             _context = context;
         }
 
-        public IActionResult DashboardMain()
+        public IActionResult Dashboard()
         {
             // Admin kontrolü
             int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
@@ -66,46 +66,6 @@ namespace VipTransfer.Web.Controllers
             return View(sonRezervasyonlar);
         }    // Firma dashboard
 
-
-        public IActionResult Dashboard()
-        {
-            // Admin kontrolü
-            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
-            if (isAdmin == null || isAdmin.Value != 1)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            // İstatistikleri hazırla
-            ViewBag.FirmaSayisi = _context.FIRMA.Count();
-            ViewBag.MusteriSayisi = _context.MUSTERI.Count();
-            ViewBag.AracSayisi = _context.ARACLAR.Count();
-            ViewBag.RezervasyonSayisi = _context.REZERVASYON.Count();
-
-            // Bugün ve yarının tarih bilgilerini hazırla
-            DateTime bugun = DateTime.Today;
-            DateTime yarin = bugun.AddDays(1);
-
-            // Bugün ve yarınki rezervasyon sayılarını hesapla
-            ViewBag.BugunRezervasyonSayisi = _context.REZERVASYON
-                .Count(r => r.REZTARIH.Date == bugun);
-
-            ViewBag.YarinRezervasyonSayisi = _context.REZERVASYON
-                .Count(r => r.REZTARIH.Date == yarin);
-
-            // Son 10 rezervasyonu getir
-            var sonRezervasyonlar = _context.REZERVASYON
-                .OrderByDescending(r => r.KAYITTARIH)
-                .Take(10)
-                .ToList();
-
-            // Müşteri bilgilerini getir
-            var musteriGuidListesi = sonRezervasyonlar.Select(r => r.MUSTERIGUID).Distinct().ToList();
-            var musteriler = _context.MUSTERI.Where(m => musteriGuidListesi.Contains(m.MUSTERIGUID)).ToList();
-            ViewBag.Musteriler = musteriler;
-
-            return View(sonRezervasyonlar);
-        }
 
         // Belirli bir güne ait rezervasyonlar
         public IActionResult DailyReservations(string date)
@@ -1270,6 +1230,27 @@ namespace VipTransfer.Web.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult CreateCustomerFromModal([FromBody] MUSTERIModels model)
+        {
+            try
+            {
+              
+                model.MUSTERIGUID = Guid.NewGuid().ToString();
+                model.MADISOYADI = $"{model.MADI} {model.MSOYADI}";
+                 
+                _context.MUSTERI.Add(model);
+                _context.SaveChanges();
+
+                return Json(new { success = true, customerId = model.MUSTERIGUID, message = "Müşteri başarıyla oluşturuldu" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Hata oluştu: {ex.Message}" });
+            }
+        }
+
+
         // Add this method to your FirmaController.cs file
 
         [HttpPost]
@@ -1282,15 +1263,6 @@ namespace VipTransfer.Web.Controllers
                 return Json(new { success = false, message = "Oturum zaman aşımına uğradı. Lütfen tekrar giriş yapın." });
             }
 
-            // Model doğrulama
-            if (string.IsNullOrEmpty(model.MusteriId) ||
-                string.IsNullOrEmpty(model.Nereden) ||
-                string.IsNullOrEmpty(model.Nereye) ||
-                string.IsNullOrEmpty(model.AracId))
-            {
-                return Json(new { success = false, message = "Lütfen tüm gerekli alanları doldurun." });
-            }
-
             try
             {
                 // Müşteri bilgilerini getir
@@ -1301,11 +1273,20 @@ namespace VipTransfer.Web.Controllers
                 }
 
                 // Araç bilgilerini getir
+                 string firmaguid = "",aracguid="";
+                 if(model.AracId != null)
+                     aracguid=model.AracId ;
+
                 var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == model.AracId);
                 if (arac == null)
                 {
-                    return Json(new { success = false, message = "Araç bulunamadı." });
+                     firmaguid = "";                    
                 }
+                else{
+                    firmaguid = arac.FIRMAGUID;
+                }
+
+               
 
                 // Tarih kontrolü
                 if (!DateTime.TryParse(model.Tarih, out DateTime tarih))
@@ -1318,14 +1299,14 @@ namespace VipTransfer.Web.Controllers
                 {
                     REZGUID = Guid.NewGuid().ToString(),
                     MUSTERIGUID = model.MusteriId,
-                    ARACGUID = model.AracId,
-                    FIRMAGUID = arac.FIRMAGUID,
+                    ARACGUID = aracguid,
+                    FIRMAGUID =firmaguid,
                     NERDEN = model.Nereden,
                     NEREYE = model.Nereye,
                     REZTARIH = tarih,
                     REZSAAT = model.Saat,
                     UCUSNO = model.UcusNo,
-                    UCRET = decimal.Parse(model.Ucret),
+                    UCRET =model.Ucret,
                     TAHMINIKM = 0, // Bu değer hesaplanabilir
                     IPTAL = 0,
                     KAYITKULL = username,
@@ -1470,5 +1451,5 @@ public class ReservationCreateModel
     public string Saat { get; set; }
     public string UcusNo { get; set; }
     public string AracId { get; set; }
-    public string Ucret { get; set; }
+    public decimal Ucret { get; set; }
 }

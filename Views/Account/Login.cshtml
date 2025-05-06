@@ -1,52 +1,150 @@
 @model VipTransfer.Web.Models.ViewModels.LoginViewModel
 @{
+    Layout = "_Layout"; // Ana layout kullanılacak
     ViewData["Title"] = "Giriş Yap";
 }
 
-<div class="flex justify-center my-8">
+<div class="fixed inset-0 bg-gradient-to-br from-blue-900 to-blue-600 z-0"></div>
+
+<div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-md">
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <div class="bg-blue-700 p-6 text-white text-center">
-                <h2 class="text-2xl font-bold">@ViewData["Title"]</h2>
-                <p class="mt-2 text-blue-100">VIP Transfer hesabınıza giriş yapın</p>
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105">
+            <div class="bg-gradient-to-r from-blue-700 to-blue-500 p-8 text-white text-center relative">
+                <div class="absolute top-4 left-4">
+                    <i class="fas fa-shield-alt text-3xl opacity-50"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-3">VIP Transfer</h2>
+                <p class="text-blue-100 mb-4">Güvenli Giriş Paneli</p>
+                <div class="absolute top-4 right-4">
+                    <i class="fas fa-lock text-2xl opacity-50"></i>
+                </div>
             </div>
-            
-            <div class="p-6">
-                <form asp-action="Login" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-                    
-                    <div class="mb-4">
-                        <label asp-for="Username" class="block text-gray-700 text-sm font-medium mb-2">Kullanıcı Adı</label>
-                        <input asp-for="Username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Kullanıcı adınızı girin">
-                        <span asp-validation-for="Username" class="text-sm text-red-600"></span>
+
+            <div class="p-8">
+                <form id="loginForm" asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4 bg-red-50 p-3 rounded-lg"></div>
+
+                    <div class="mb-6 relative">
+                        <label asp-for="Username" class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-user mr-2 text-blue-600"></i>Kullanıcı Adı
+                        </label>
+                        <div class="relative">
+                            <input asp-for="Username"
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                placeholder="Kullanıcı adınızı girin" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Username" class="text-sm text-red-600 mt-1 block"></span>
                     </div>
-                    
-                    <div class="mb-6">
-                        <label asp-for="Password" class="block text-gray-700 text-sm font-medium mb-2">Şifre</label>
-                        <input asp-for="Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Şifrenizi girin">
-                        <span asp-validation-for="Password" class="text-sm text-red-600"></span>
+
+                    <div class="mb-6 relative">
+                        <label asp-for="Password" class="block text-gray-700 text-sm font-medium mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-600"></i>Şifre
+                        </label>
+                        <div class="relative">
+                            <input asp-for="Password" type="password"
+                                class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                placeholder="Şifrenizi girin" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-lock text-gray-400"></i>
+                            </div>
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                <button type="button" id="togglePassword" class="focus:outline-none">
+                                    <i class="fas fa-eye-slash text-gray-400"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Password" class="text-sm text-red-600 mt-1 block"></span>
                     </div>
-                    
-                    <div class="flex items-center mb-6">
-                        <input asp-for="RememberMe" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                        <label asp-for="RememberMe" class="ml-2 block text-sm text-gray-700">Beni hatırla</label>
+
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <input asp-for="RememberMe" type="checkbox"
+                                class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                            <label asp-for="RememberMe" class="ml-2 block text-sm text-gray-700">Beni hatırla</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-600 hover:underline">Şifremi Unuttum</a>
                     </div>
-                    
+
                     <div>
-                        <button type="submit" class="w-full bg-blue-700 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
-                            Giriş Yap
+                        <button type="submit" id="loginButton"
+                            class="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition duration-300 flex items-center justify-center">
+                            <span id="loginText">Giriş Yap</span>
+                            <div id="loginLoader" class="hidden ml-2">
+                                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                            </div>
                         </button>
                     </div>
                 </form>
-                
+
                 <div class="mt-6 text-center">
-                    <p class="text-gray-600">Hesabınız yok mu? <a href="/Account/Register" class="text-blue-700 hover:underline font-medium">Kayıt Ol</a></p>
+                    <p class="text-gray-600">
+                        Hesabınız yok mu?
+                        <a href="/Account/Register" class="text-blue-700 hover:underline font-medium">
+                            Kayıt Ol
+                        </a>
+                    </p>
                 </div>
             </div>
+        </div>
+
+        <!-- VIP Transfer Logo ve Slogan -->
+        <div class="text-center mt-6 text-white">
+            <div class="flex justify-center items-center mb-2">
+                <i class="fas fa-car-side text-4xl mr-3"></i>
+                <span class="text-2xl font-bold">VIP Transfer</span>
+            </div>
+            <p class="text-blue-100">Güvenli ve Konforlu Yolculukların Adresi</p>
         </div>
     </div>
 </div>
 
+@section Styles {
+    <style>
+        body {
+            overflow: hidden;
+        }
+        .container {
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+    </style>
+}
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+            const loginButton = document.getElementById('loginButton');
+            const loginText = document.getElementById('loginText');
+            const loginLoader = document.getElementById('loginLoader');
+            const passwordInput = document.getElementById('Password');
+            const togglePasswordButton = document.getElementById('togglePassword');
+
+            // Şifre gösterme/gizleme
+            togglePasswordButton.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+                this.querySelector('i').classList.toggle('fa-eye');
+            });
+
+            // Form gönderme
+            loginForm.addEventListener('submit', function (e) {
+                loginText.classList.add('hidden');
+                loginLoader.classList.remove('hidden');
+                loginButton.disabled = true;
+            });
+        });
+    </script>
 }
