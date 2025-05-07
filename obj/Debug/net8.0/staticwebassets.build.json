@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "t6iDo9+xqX/+jscuzmtoLqx35IzxCBm/QwoYVKHOWXc=",
+  "Hash": "vQOeSE3dVpII0dCmvKW5NgnSFZcAYk4g/t2FkddeH2c=",
   "Source": "VipTransfer.Web",
   "BasePath": "_content/VipTransfer.Web",
   "Mode": "Default",
@@ -17,10 +17,10 @@
   ],
   "Assets": [
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VipTransfer.Web.styles.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VipTransfer.Web.styles.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Computed",
-      "ContentRoot": "d:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "D:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/VipTransfer.Web",
       "RelativePath": "VipTransfer.Web.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "d:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VipTransfer.Web.styles.css"
+      "OriginalItemSpec": "D:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\bundle\\VipTransfer.Web.styles.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VipTransfer.Web.bundle.scp.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VipTransfer.Web.bundle.scp.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Computed",
-      "ContentRoot": "d:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "D:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/VipTransfer.Web",
       "RelativePath": "VipTransfer.Web.bundle.scp.css",
       "AssetKind": "All",
@@ -52,10 +52,10 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "d:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VipTransfer.Web.bundle.scp.css"
+      "OriginalItemSpec": "D:\\project2\\VipTransfer.Web\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\VipTransfer.Web.bundle.scp.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\css\\site.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\css\\site.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -74,7 +74,7 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\favicon.ico",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\favicon.ico",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -93,7 +93,7 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\js\\site.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\js\\site.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -112,7 +112,7 @@
       "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -131,7 +131,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -150,7 +150,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -169,7 +169,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -188,7 +188,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -207,7 +207,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -226,7 +226,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -245,7 +245,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -264,7 +264,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -283,7 +283,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -302,7 +302,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -321,7 +321,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -340,7 +340,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -359,7 +359,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -378,7 +378,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -397,7 +397,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -416,7 +416,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -435,7 +435,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -454,7 +454,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -473,7 +473,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -492,7 +492,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -511,7 +511,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -530,7 +530,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -549,7 +549,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -568,7 +568,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -587,7 +587,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -606,7 +606,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -625,7 +625,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -644,7 +644,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -663,7 +663,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -682,7 +682,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -701,7 +701,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -720,7 +720,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -739,7 +739,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -758,7 +758,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -777,7 +777,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -796,7 +796,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -815,7 +815,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -834,7 +834,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -853,7 +853,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -872,7 +872,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -891,7 +891,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -910,7 +910,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -929,7 +929,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -948,7 +948,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\bootstrap\\LICENSE",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -967,7 +967,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\bootstrap\\LICENSE"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -986,7 +986,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1005,7 +1005,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1024,7 +1024,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1043,7 +1043,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1062,7 +1062,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1081,7 +1081,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1100,7 +1100,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1119,7 +1119,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation\\LICENSE.md"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\dist\\jquery.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1138,7 +1138,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1157,7 +1157,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.js"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1176,7 +1176,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\lib\\jquery\\LICENSE.txt",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1195,7 +1195,7 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1214,7 +1214,7 @@
       "OriginalItemSpec": "wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_1.PNG"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
@@ -1233,7 +1233,7 @@
       "OriginalItemSpec": "wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173240133531_2.PNG"
     },
     {
-      "Identity": "d:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG",
+      "Identity": "D:\\project2\\VipTransfer.Web\\wwwroot\\uploads\\araclar\\5cc909cc-dfd2-42cb-8177-4be37fa667ab_638815173315797693_3.PNG",
       "SourceId": "VipTransfer.Web",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\project2\\VipTransfer.Web\\wwwroot\\",
