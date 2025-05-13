@@ -178,6 +178,18 @@ namespace VipTransfer.Web.Controllers
             var firma = _context.FIRMA
                 .FirstOrDefault(f => f.FIRMAGUID == rezervasyon.FIRMAGUID);
 
+            // Araç yoksa araç listesini getir
+            if (arac == null && rezervasyon.IPTAL == 0)
+            {
+                var aracListesi = _context.ARACLAR.ToList();
+                if (rezervasyon.FIRMAGUID != null)
+                {
+                    // Firma araçlarını filtrele
+                    aracListesi = aracListesi.Where(a => a.FIRMAGUID == rezervasyon.FIRMAGUID).ToList();
+                }
+                ViewBag.AracListesi = aracListesi;
+            }
+
             // ViewBag ile diğer bilgileri gönder
             ViewBag.Arac = arac;
             ViewBag.Musteri = musteri;
@@ -185,7 +197,6 @@ namespace VipTransfer.Web.Controllers
 
             return View(rezervasyon);
         }
-
         // Rezervasyon iptal et
         [HttpPost]
         public IActionResult Cancel(string id)
@@ -242,6 +253,151 @@ namespace VipTransfer.Web.Controllers
             return RedirectToAction("Details", new { id = rezervasyon.REZGUID });
         }
 
+        [HttpPost]
+        public IActionResult AtamaYap(string id, string AracGUID)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(AracGUID))
+            {
+                TempData["ErrorMessage"] = "Gerekli bilgiler eksik.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            var rezervasyon = _context.REZERVASYON.FirstOrDefault(r => r.REZGUID == id);
+            if (rezervasyon == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+
+            bool hasPermission = false;
+            if (userType == "Firma" && rezervasyon.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (isAdmin.HasValue && isAdmin.Value == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Aracı bul
+            var arac = _context.ARACLAR.FirstOrDefault(a => a.ARACGUID == AracGUID);
+            if (arac == null)
+            {
+                TempData["ErrorMessage"] = "Seçilen araç bulunamadı.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            // Araç bilgilerini güncelle
+            rezervasyon.ARACGUID = arac.ARACGUID;
+            rezervasyon.FIRMAGUID = arac.FIRMAGUID;
+
+            _context.Update(rezervasyon);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Araç başarıyla atandı.";
+            return RedirectToAction("Details", new { id });
+        }
+
+
+        [HttpPost]
+        public IActionResult FiyatGuncelle(string id, decimal Ucret)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("List");
+            }
+
+            var rezervasyon = _context.REZERVASYON.FirstOrDefault(r => r.REZGUID == id);
+            if (rezervasyon == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+
+            bool hasPermission = false;
+            if (userType == "Firma" && rezervasyon.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (isAdmin.HasValue && isAdmin.Value == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Ücreti güncelle
+            rezervasyon.UCRET = Ucret;
+
+            _context.Update(rezervasyon);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Ücret başarıyla güncellendi.";
+            return RedirectToAction("Details", new { id });
+        }
+
+
+        [HttpPost]
+        public IActionResult ApproveReservation(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("List");
+            }
+
+            var rezervasyon = _context.REZERVASYON.FirstOrDefault(r => r.REZGUID == id);
+            if (rezervasyon == null)
+            {
+                return NotFound();
+            }
+
+            // Yetki kontrolü
+            string username = HttpContext.Session.GetString("Username");
+            string userType = HttpContext.Session.GetString("UserType");
+            string userGuid = HttpContext.Session.GetString("UserGUID");
+            int? isAdmin = HttpContext.Session.GetInt32("IsAdmin");
+
+            bool hasPermission = false;
+            if (userType == "Firma" && rezervasyon.FIRMAGUID == userGuid)
+            {
+                hasPermission = true;
+            }
+            else if (isAdmin.HasValue && isAdmin.Value == 1)
+            {
+                hasPermission = true;
+            }
+
+            if (!hasPermission)
+            {
+                return Unauthorized();
+            }
+
+            // Rezervasyonu onayla (IPTAL = 2 onaylandı anlamına gelir)
+            rezervasyon.IPTAL = 2;
+            rezervasyon.ALTFIRMA = "ONAYLANDI-" + username;
+
+            _context.Update(rezervasyon);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Rezervasyon başarıyla onaylandı.";
+            return RedirectToAction("Details", new { id });
+        }
         // Fiyat hesapla (AJAX için)
         [HttpPost]
         public IActionResult CalculatePrice(string nereden, string nereye, string aracGuid)

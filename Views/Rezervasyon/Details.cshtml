@@ -30,27 +30,28 @@
     }
 
     <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <!-- Durum Bilgisi -->
-        <div class="p-4 @(Model.IPTAL == 1 ? "bg-red-600" : (Model.IPTAL == 2 ? "bg-green-600" : "bg-blue-700")) text-white">
-            <div class="flex items-center">
-                @if (Model.IPTAL == 1)
-                {
-                    <i class="fas fa-times-circle text-xl mr-2"></i>
-                    <span class="font-semibold">İptal Edildi</span>
-                    <span class="ml-auto">İptal Tarihi: @Model.IPTALTARIH?.ToString("dd.MM.yyyy HH:mm")</span>
-                }
-                else if (Model.IPTAL == 2)
-                {
-                    <i class="fas fa-check-circle text-xl mr-2"></i>
-                    <span class="font-semibold">Onaylandı</span>
-                }
-                else
-                {
-                    <i class="fas fa-clock text-xl mr-2"></i>
-                    <span class="font-semibold">Onay Bekliyor</span>
-                }
-            </div>
-        </div>
+  
+      <!-- Durum Bilgisi -->
+<div class="p-4 @(Model.IPTAL == 1 ? "bg-red-600" : (Model.IPTAL == 2 ? "bg-green-600" : "bg-blue-700")) text-white">
+    <div class="flex items-center">
+        @if (Model.IPTAL == 1)
+        {
+            <i class="fas fa-times-circle text-xl mr-2"></i>
+            <span class="font-semibold">İptal Edildi</span>
+            <span class="ml-auto">İptal Tarihi: @Model.IPTALTARIH?.ToString("dd.MM.yyyy HH:mm")</span>
+        }
+        else if (Model.IPTAL == 2)
+        {
+            <i class="fas fa-check-circle text-xl mr-2"></i>
+            <span class="font-semibold">Onaylandı</span>
+        }
+        else
+        {
+            <i class="fas fa-clock text-xl mr-2"></i>
+            <span class="font-semibold">Onay Bekliyor</span>
+        }
+    </div>
+</div>
 
         <div class="p-6">
             <!-- Rezervasyon Bilgileri -->

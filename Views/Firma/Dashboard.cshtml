@@ -520,11 +520,13 @@
             const formData = new FormData(e.target);
             const customerData = Object.fromEntries(formData.entries());
             
-            console.log("Form data :"+JSON.stringify(customerData));
+            console.log("Form data :"+formData);
 
             // Faturalı kontrolü
-            customerData.MFATURALI = customerData.MFATURALI === '1' ? '1' : '0';
-            
+            customerData.MFATURALI = customerData.MFATURALI === '1' ? 1 : 0;
+            customerData.MVERGINO = customerData.MVERGINO ? Number(customerData.MVERGINO) : 0;
+    
+
             // AJAX isteği gönder
             fetch('/Firma/CreateCustomerFromModal', {
                 method: 'POST',

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VipTransfer.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d4239bb7f84acb13e2ff9c32bea878db19a2576")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f87987595c0531aa9daa5e9d21bcc29507a9591")]
 [assembly: System.Reflection.AssemblyProductAttribute("VipTransfer.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VipTransfer.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -37,8 +37,8 @@ namespace VipTransfer.Web.Controllers
             ViewBag.RezervasyonSayisi = _context.REZERVASYON.Count();
 
             // Onaylanan, bekleyen ve iptal rezervasyon sayıları
-            ViewBag.OnaylananSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 0 && !string.IsNullOrEmpty(r.ALTFIRMA) && r.ALTFIRMA.StartsWith("ONAYLANDI"));
-            ViewBag.BekleyenSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 0 && (string.IsNullOrEmpty(r.ALTFIRMA) || !r.ALTFIRMA.StartsWith("ONAYLANDI")));
+            ViewBag.OnaylananSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 2);
+            ViewBag.BekleyenSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 0); 
             ViewBag.IptalSayisi = _context.REZERVASYON.Count(r => r.IPTAL == 1);
 
             // Bugün ve yarınki rezervasyon sayıları
@@ -50,7 +50,7 @@ namespace VipTransfer.Web.Controllers
             // Son rezervasyonları getir
             var sonRezervasyonlar = _context.REZERVASYON
                 .OrderByDescending(r => r.KAYITTARIH)
-                .Take(20)  // Daha fazla rezervasyon göster
+                .Take(10)  // Daha fazla rezervasyon göster
                 .ToList();
 
             // Müşteri bilgilerini getir
